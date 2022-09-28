@@ -1,28 +1,22 @@
-import FeedItem from './FeedItem';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import FeedItem from './FeedItem';
+import Tags from './Tags';
+import Pages from './Pages'
 
 export default function Feeds(props) {
   const [isGlobal, setIsGlobal] = useState(true);
-  const [currPage, setCurrpage] = useState(1);
   const [articles, setArticles] = useState([]);
+  const [currPage, setCurrpage] = useState(1);
   const [pagesCount, setPagesCount] = useState(0);
+
   // eqal to compDidMount, get the feeds list and feeds count from api
   useEffect(() => {
     const BASE_URL = process.env.REACT_APP_BASE_URL;
     const url = `${BASE_URL}/articles`;
     const limit = 2;
     const offset = 0;
-    axios.get(url, {params: {limit, offset}})
-      .then(res => {
-        const { articles, articlesCount } = res.data;
-        const pagesCount = Math.ceil(articlesCount/limit)
-        setArticles(articles)
-        setPagesCount(pagesCount)
-      })
-      .catch(err => {
-        console.log(err)
-      })
+    getArticles(url, limit, offset)
   }, [])
 
   function changeCurrPage(e) {
@@ -33,10 +27,14 @@ export default function Feeds(props) {
     const url = `${BASE_URL}/articles`;
     const limit = 2;
     const offset = currPage - 1;
-    axios.get(url, {params: {limit, offset}})
+    getArticles(url, limit, offset)
+  }
+
+  function getArticles(url, limit, offset, tag, author) {
+    axios.get(url, { params: { limit, offset, tag, author } })
       .then(res => {
         const { articles, articlesCount } = res.data;
-        const pagesCount = Math.ceil(articlesCount/limit)
+        const pagesCount = Math.ceil(articlesCount / limit)
         setArticles(articles)
         setPagesCount(pagesCount)
       })
@@ -71,34 +69,10 @@ export default function Feeds(props) {
             </div>
 
             {articles.map(article => <FeedItem key={article._id} article={article} />)}
-
-            <nav>
-              <ul className="pagination">
-                {new Array(pagesCount).fill().map((ele, i) => (
-                  <li className={`page-item ${currPage === i + 1 ? 'active' : ''}`} key={i}>
-                  <a onClick={changeCurrPage} className="page-link"href="">{i + 1}</a>
-                </li>
-                ))}
-              </ul>
-            </nav>
-
+            <Pages pagesCount={pagesCount} currPage={currPage} changeCurrPage={changeCurrPage}/>
           </div>
 
-          <div className="col-md-3">
-            <div className="sidebar">
-              <p>Popular Tags</p>
-              <div className="tag-list">
-                <a href="" className="tag-pill tag-default">programming</a>
-                <a href="" className="tag-pill tag-default">javascript</a>
-                <a href="" className="tag-pill tag-default">emberjs</a>
-                <a href="" className="tag-pill tag-default">angularjs</a>
-                <a href="" className="tag-pill tag-default">react</a>
-                <a href="" className="tag-pill tag-default">mean</a>
-                <a href="" className="tag-pill tag-default">node</a>
-                <a href="" className="tag-pill tag-default">rails</a>
-              </div>
-            </div>
-          </div>
+          <Tags />
 
         </div>
       </div>

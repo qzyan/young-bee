@@ -1,19 +1,25 @@
+import TimeAgo from 'timeago-react';
+import defaultAvatar from '../../../assets/avatar.png';
+
 export default function FeedItem(props) {
+  const { title, description, createdAt, favoritesCount, author: { username, image } } = props.article
   return (
     <div className="article-preview">
       <div className="article-meta">
-        <a href="profile/123"><img alt="" src="http://i.imgur.com/Qr71crq.jpg" /></a>
+        <a href="profile/123"><img alt="avatar" src={image || defaultAvatar} /></a>
         <div className="info">
-          <a href="profile/123" className="author">Eric Simons</a>
-          <span className="date">January 20th</span>
+          <a href="profile/123" className="author">{username}</a>
+          <span className="date">
+            <TimeAgo datetime={createdAt} />
+          </span>
         </div>
         <button className="btn btn-outline-primary btn-sm pull-xs-right">
-          <i className="ion-heart"></i> 29
+          <i className="ion-heart"></i> {favoritesCount}
         </button>
       </div>
       <a href="article/123" className="preview-link">
-        <h1>How to build webapps that scale</h1>
-        <p>This is the description for the post.</p>
+        <h1>{title}</h1>
+        <p>{description}</p>
         <span>Read more...</span>
       </a>
     </div>

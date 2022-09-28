@@ -1,8 +1,11 @@
 import { Fragment } from 'react';
 import { NavLink } from 'react-router-dom';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
+import defaultAvatar from '../../assets/avatar.png'
+
 
 function Header(props) {
+  const {currUser } = props
   return (
     <nav className="navbar navbar-light">
       <div className="container">
@@ -11,7 +14,7 @@ function Header(props) {
           <li className="nav-item">
             <NavLink className="nav-link hhh" to="/home">Home</NavLink>
           </li>
-          {props.currUser
+          {currUser
             ? <Fragment>
               <li className="nav-item">
                 <NavLink className="nav-link" to="/editor">
@@ -25,8 +28,8 @@ function Header(props) {
               </li>
               <li className="nav-item">
                 <NavLink className="nav-link" to="/profile">
-                  <img className="user-pic" src="" alt='' />
-                  {props.currUser.username}
+                  <img className="user-pic" src={currUser.image || defaultAvatar} alt="avatar" />
+                  {currUser.username}
                 </NavLink>
               </li>
             </Fragment>
