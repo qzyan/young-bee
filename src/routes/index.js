@@ -4,6 +4,7 @@ import Feeds from '../pages/Feeds';
 import Editor from '../containers/Editor';
 import Profile from '../pages/Profile';
 import Settings from '../pages/Settings';
+import Article from '../pages/Article';
 
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -31,6 +32,10 @@ export default [
   {
     path: '/settings',
     element: <Settings />
+  },
+  {
+    path: '/article/:articleId',
+    element: <Article />
   },
   {
     path: '/*',

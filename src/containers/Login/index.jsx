@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { createLoginAction } from '../../redux/actions/currUser';
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import axios from 'axios';
 
 //define UI component
@@ -13,7 +13,6 @@ function Login(props) {
   useEffect(() => {
     setIsLogin(props.isLogin);
   }, [props.isLogin]);
-
 
   function toggleIsLogin(event) {
     event.preventDefault();
@@ -36,7 +35,7 @@ function Login(props) {
         // update the currUser in redux
         props.login(user);
         // jump to home
-        navigate('/home')
+        navigate(-1)
 
       })
       .then(() => {
@@ -54,8 +53,8 @@ function Login(props) {
             <h1 className="text-xs-center">{isLogin ? 'Sign in' : 'Sign up'}</h1>
             <p className="text-xs-center">
               {isLogin
-                ? <a href=":javascript" onClick={toggleIsLogin}>Need a new account?</a>
-                : <a href=":javascript" onClick={toggleIsLogin}>Have an account?</a>}
+                ? <Link to="/register" >Need a new account?</Link>
+                : <Link to="/login" >Have an account?</Link>}
 
             </p>
             <form onSubmit={handleSubmit}>
@@ -91,10 +90,9 @@ function Login(props) {
 
 
 // return an object, key as the props.key that pass to UI, value as props.key's value that pass to UI----redux's state
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
   return {
-    currUser: state.currUser,
-    ownProps
+    currUser: state.currUser
   };
 }
 

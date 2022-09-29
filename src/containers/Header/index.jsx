@@ -5,7 +5,7 @@ import defaultAvatar from '../../assets/avatar.png'
 
 
 function Header(props) {
-  const {currUser } = props
+  const { currUser } = props
   return (
     <nav className="navbar navbar-light">
       <div className="container">
@@ -47,4 +47,4 @@ function Header(props) {
   )
 }
 
-export default connect((state) => ({currUser: state.currUser}),{})(Header)
+export default connect((state) => ({ currUser: state.currUser }), {})(Header)

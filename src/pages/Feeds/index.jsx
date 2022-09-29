@@ -9,12 +9,12 @@ export default function Feeds(props) {
   const [articles, setArticles] = useState([]);
   const [currPage, setCurrpage] = useState(1);
   const [pagesCount, setPagesCount] = useState(0);
+  const limit = 4;
 
   // eqal to compDidMount, get the feeds list and feeds count from api
   useEffect(() => {
     const BASE_URL = process.env.REACT_APP_BASE_URL;
     const url = `${BASE_URL}/articles`;
-    const limit = 2;
     const offset = 0;
     getArticles(url, limit, offset)
   }, [])
@@ -25,8 +25,7 @@ export default function Feeds(props) {
     setCurrpage(currPage)
     const BASE_URL = process.env.REACT_APP_BASE_URL;
     const url = `${BASE_URL}/articles`;
-    const limit = 2;
-    const offset = currPage - 1;
+    const offset = (currPage - 1) * limit;
     getArticles(url, limit, offset)
   }
 
@@ -68,7 +67,7 @@ export default function Feeds(props) {
               </ul>
             </div>
 
-            {articles.map(article => <FeedItem key={article._id} article={article} />)}
+            {articles.map(article => <FeedItem key={article._id} article={article}  />)}
             <Pages pagesCount={pagesCount} currPage={currPage} changeCurrPage={changeCurrPage}/>
           </div>
 
