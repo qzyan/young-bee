@@ -1,44 +1,87 @@
 import { useState, useEffect } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import { connect } from 'react-redux';
 import ReactMarkdown from 'react-markdown';
 import axios from 'axios';
-import defaultAvatar from '../../assets/avatar.png';
 import Comments from '../../containers/Comments';
+import ArticleMeta from './ArticleMeta';
 import './index.css';
 
 
-export default function Article(props) {
-  const { state } = useLocation();
+function Article(props) {
+  const { currUser } = props;
   const { articleId } = useParams();
   const [article, setArticle] = useState({})
-
-
-  // if it was routed from a navlink - get the article from the state diretly
-  // else send a ajax to get the article info
+  let { title, body, tagList = [], createdAt, updatedAt, favorited, favoritesCount: initFavCount, author } = article;
+  const [isFavorited, setIsFavorited] = useState(false);
+  const [favoritesCount, setFavoritesCount] = useState(0)
+  // else send a ajax to get the article info when component mounted
   useEffect(() => {
-    if (state) {
-      var { article } = state;
-      setArticle(article);
-      return;
-    }
-
     getArticle();
 
     async function getArticle() {
       try {
+        if (currUser) {
+          var { token } = currUser
+        }
+
         const BASE_URL = process.env.REACT_APP_BASE_URL;
         const url = `${BASE_URL}/articles/${articleId}`;
-        const res = await axios.get(url);
+        const res = await axios.get(url,
+          {
+            headers: {
+              'Authentication': `Bearer: ${token}`
+            }
+          }
+          );
         var { data: { article } } = res;
         setArticle(article);
       } catch (err) {
         console.log(err)
       }
     };
-  }, [])
+  }, []);
 
+  //todo: figure out the isfavorited both server side and client
+  //when article is updated, update the isFavorited and favoritesCount state
+  useEffect(() => {
+    const { favorited, favoritesCount } = article;
+    setIsFavorited(favorited);
+    setFavoritesCount(favoritesCount);
+  }, [article])
 
-  const { title, body, tagList=[], commentList=[], createdAt, updatedAt, favoritesCount, author } = article;
+  async function handleToggleFavorite(e) {
+    e.currentTarget.blur()
+    // require to be logged in
+    if (!currUser) {
+      return
+    }
+
+    try {
+      // send ajax request to toggle favoite
+      const BASE_URL = process.env.REACT_APP_BASE_URL;
+      const url = `${BASE_URL}/articles/${articleId}/favorite`;
+      await axios.post(url, {}, {
+        headers: {
+          'Authentication': `Bearer: ${currUser.token}`
+        }
+      });
+
+      // toggle the ui
+      if (isFavorited) {
+        setFavoritesCount(favoritesCount - 1)
+        setIsFavorited(false)
+        return;
+      }
+
+      setIsFavorited(true)
+      setFavoritesCount(favoritesCount + 1)
+    }
+    catch (err) {
+      console.log(err)
+    }
+
+  };
 
   if (author) {
     var { image, username } = author;
@@ -49,28 +92,9 @@ export default function Article(props) {
 
       <div className="banner">
         <div className="container">
-
           <h1>{title}</h1>
 
-          <div className="article-meta">
-            <a href=""><img src={image || defaultAvatar} /></a>
-            <div className="info">
-              <a href="" className="author">{username}</a>
-              <span className="date">{`Posted on ${new Date(createdAt).toDateString()}`}</span>
-            </div>
-            <button className="btn btn-sm btn-outline-secondary">
-              <i className="ion-plus-round"></i>
-              &nbsp;
-              Follow {username}
-            </button>
-            &nbsp;&nbsp;
-            <button className="btn btn-sm btn-outline-primary">
-              <i className="ion-heart"></i>
-              &nbsp;
-              Favorite Post <span className="counter">({favoritesCount})</span>
-            </button>
-          </div>
-
+          <ArticleMeta username={username} createdAt={createdAt} favoritesCount={favoritesCount} image={image} isFavorited={isFavorited} handleToggleFavorite={handleToggleFavorite} />
         </div>
       </div>
 
@@ -99,28 +123,10 @@ export default function Article(props) {
         <hr />
 
         <div className="article-actions">
-          <div className="article-meta">
-            <a href="profile.html"><img src={image || defaultAvatar} /></a>
-            <div className="info">
-              <a href="" className="author">{username}</a>
-              <span className="date">{`Posted on ${new Date(createdAt).toDateString()}`}</span>
-            </div>
-
-            <button className="btn btn-sm btn-outline-secondary">
-              <i className="ion-plus-round"></i>
-              &nbsp;
-              Follow Eric Simons
-            </button>
-            &nbsp;
-            <button className="btn btn-sm btn-outline-primary">
-              <i className="ion-heart"></i>
-              &nbsp;
-              Favorite Post <span className="counter">(29)</span>
-            </button>
-          </div>
+          <ArticleMeta username={username} createdAt={createdAt} favoritesCount={favoritesCount} image={image} isFavorited={isFavorited} handleToggleFavorite={handleToggleFavorite} />
         </div>
 
-        <Comments articleId={articleId} commentList={commentList} />
+        <Comments articleId={articleId} />
 
       </div>
 
@@ -128,3 +134,5 @@ export default function Article(props) {
   )
 
 }
+
+export default connect((state) => ({ currUser: state.currUser }), {})(Article)

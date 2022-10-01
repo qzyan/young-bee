@@ -7,18 +7,31 @@ import defaultAvatar from '../../assets/avatar.png';
 import './index.css';
 
 function Comments(props) {
-  const { currUser, articleId, commentList } = props;
-  const [comments, setComments] = useState(commentList);
+  const { currUser, articleId } = props;
+  const [comments, setComments] = useState([]);
   const inputEl = useRef(null);
 
   if (currUser) {
     var { image, username } = currUser
   }
 
-  useEffect(()=>{
-    setComments(commentList)
-    console.log(commentList)
-  },[commentList])
+  // send ajax to get comments when component mounted
+  useEffect(() => {
+
+    getComments();
+
+    async function getComments() {
+      try{
+        const BASE_URL = process.env.REACT_APP_BASE_URL;
+        const url = `${BASE_URL}/articles/${articleId}/comments`;
+        const res = await axios.get(url);
+        var { data: { comments } } = res;
+        setComments(comments);
+      }catch(err) {
+        console.log(err)
+      }
+    };
+  }, [])
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -30,9 +43,10 @@ function Comments(props) {
       }
     })
       .then(res => {
-        const {comment} = res.data;
+        const { comment } = res.data;
         const newComments = [comment, ...comments];
         setComments(newComments)
+        inputEl.current.value = ''
       })
       .catch(err => {
         console.log(err);

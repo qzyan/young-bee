@@ -3,10 +3,10 @@ import defaultAvatar from '../../../assets/avatar.png';
 
 export default function CommentItem(props) {
   const { comment, currUser } = props;
-  const { body, createdAt, favoritesCount, author: { image, username } } = comment;
+  const { body, createdAt, favoritesCount, author: { image, username, _id: authorId } } = comment;
 
   if (currUser) {
-    var { username: currUsername, _id, image: currImage } = currUser
+    var { username: currUsername, _id: currUserId, image: currImage } = currUser
   }
 
   return (
@@ -20,13 +20,17 @@ export default function CommentItem(props) {
           <img src={image || defaultAvatar} className="comment-author-img" />
         </a>
         &nbsp;
-        <a href="" className="comment-author">{username}</a>
-        <span className="date-posted">{new Date(createdAt).toDateString()}</span>
 
-        <span className="mod-options">
-          <i className="ion-edit"></i>
-          <i className="ion-trash-a"></i>
-        </span>
+        <a href="" className="comment-author">{username}</a>&nbsp;
+        <span className="date-posted">{new Date(createdAt).toDateString()}</span>
+        {currUserId === authorId ?
+          <span className="mod-options">
+            <i className="ion-edit"></i>
+            <i className="ion-trash-a"></i>
+          </span> :
+          null
+        }
+
       </div>
 
     </div>
