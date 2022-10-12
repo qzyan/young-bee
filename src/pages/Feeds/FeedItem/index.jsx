@@ -47,9 +47,9 @@ export default function FeedItem(props) {
   return (
     <div className="article-preview">
       <div className="article-meta">
-        <NavLink href="profile/123"><img alt="avatar" src={image || defaultAvatar} /></NavLink>
+        <NavLink to="/profile/123"><img alt="avatar" src={image || defaultAvatar} /></NavLink>
         <div className="info">
-          <NavLink href="profile/123" className="author">{username}</NavLink>
+          <NavLink to="/profile/123" className="author">{username}</NavLink>
           <span className="date">
             <TimeAgo datetime={createdAt} />
           </span>

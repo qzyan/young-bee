@@ -12,9 +12,10 @@ function Article(props) {
   const { currUser } = props;
   const { articleId } = useParams();
   const [article, setArticle] = useState({})
-  let { title, body, tagList = [], createdAt, updatedAt, favorited, favoritesCount: initFavCount, author } = article;
+  let { title, body, tagList = [], createdAt, updatedAt, author } = article;
   const [isFavorited, setIsFavorited] = useState(false);
   const [favoritesCount, setFavoritesCount] = useState(0)
+
   // else send a ajax to get the article info when component mounted
   useEffect(() => {
     getArticle();
@@ -33,7 +34,7 @@ function Article(props) {
               'Authentication': `Bearer: ${token}`
             }
           }
-          );
+        );
         var { data: { article } } = res;
         setArticle(article);
       } catch (err) {
@@ -42,7 +43,6 @@ function Article(props) {
     };
   }, []);
 
-  //todo: figure out the isfavorited both server side and client
   //when article is updated, update the isFavorited and favoritesCount state
   useEffect(() => {
     const { favorited, favoritesCount } = article;
@@ -94,7 +94,8 @@ function Article(props) {
         <div className="container">
           <h1>{title}</h1>
 
-          <ArticleMeta username={username} createdAt={createdAt} favoritesCount={favoritesCount} image={image} isFavorited={isFavorited} handleToggleFavorite={handleToggleFavorite} />
+          <ArticleMeta username={username} image={image} createdAt={createdAt} favoritesCount={favoritesCount} isFavorited={isFavorited}
+            currUser={currUser} handleToggleFavorite={handleToggleFavorite} />
         </div>
       </div>
 
@@ -123,7 +124,8 @@ function Article(props) {
         <hr />
 
         <div className="article-actions">
-          <ArticleMeta username={username} createdAt={createdAt} favoritesCount={favoritesCount} image={image} isFavorited={isFavorited} handleToggleFavorite={handleToggleFavorite} />
+          <ArticleMeta username={username} createdAt={createdAt} favoritesCount={favoritesCount} image={image} isFavorited={isFavorited}
+            currUser={currUser} handleToggleFavorite={handleToggleFavorite} />
         </div>
 
         <Comments articleId={articleId} />

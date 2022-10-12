@@ -26,7 +26,7 @@ export default [
     element: <Editor />
   },
   {
-    path: '/profile',
+    path: '/profile/:username',
     element: <Profile />
   },
   {
