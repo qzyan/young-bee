@@ -1,6 +1,6 @@
 # Introduction
 It is the front end implemented with React of a a social blogging platform where users can share knowledge with features like following, liking, and commenting.   
-The back end is here: 
+The back end is separately implemented in this repo: [link to the back end](https://github.com/qzyan/hive)
 
 
 
