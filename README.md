@@ -1,3 +1,9 @@
+# Introduction
+It is the front end implemented with React of a a social blogging platform where users can share knowledge with features like following, liking, and commenting.   
+The back end is here: 
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
