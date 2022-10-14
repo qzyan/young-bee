@@ -1,4 +1,6 @@
-import { useState, useEffect } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react/prop-types */
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import ReactMarkdown from 'react-markdown';
@@ -7,54 +9,53 @@ import Comments from '../../containers/Comments';
 import ArticleMeta from './ArticleMeta';
 import './index.css';
 
-
 function Article(props) {
   const { currUser } = props;
   const { articleId } = useParams();
-  const [article, setArticle] = useState({})
-  let { title, body, tagList = [], createdAt, updatedAt, author } = article;
+  const [article, setArticle] = useState({});
+  // eslint-disable-next-line object-curly-newline
+  const { title, body, tagList = [], createdAt, updatedAt, author = {} } = article;
   const [isFavorited, setIsFavorited] = useState(false);
-  const [favoritesCount, setFavoritesCount] = useState(0)
+  const [favoritesCount, setFavoritesCount] = useState(0);
+  const [isFollowing, setIsFollowing] = useState(false);
 
   // else send a ajax to get the article info when component mounted
   useEffect(() => {
-    getArticle();
-
     async function getArticle() {
       try {
-        if (currUser) {
-          var { token } = currUser
-        }
+        const token = currUser ? currUser.token : null;
 
         const BASE_URL = process.env.REACT_APP_BASE_URL;
         const url = `${BASE_URL}/articles/${articleId}`;
-        const res = await axios.get(url,
-          {
-            headers: {
-              'Authentication': `Bearer: ${token}`
-            }
-          }
-        );
-        var { data: { article } } = res;
-        setArticle(article);
+        const params = token ? {
+          headers: {
+            Authentication: `Bearer: ${token}`,
+          },
+        }
+          : {};
+        const res = await axios.get(url, params);
+        const { data: { article: artic } } = res;
+        setArticle(artic);
       } catch (err) {
-        console.log(err)
+        console.log(err);
       }
-    };
+    }
+
+    getArticle();
   }, []);
 
-  //when article is updated, update the isFavorited and favoritesCount state
+  // when article is updated, update the isFavorited and favoritesCount state
   useEffect(() => {
-    const { favorited, favoritesCount } = article;
-    setIsFavorited(favorited);
-    setFavoritesCount(favoritesCount);
-  }, [article])
+    setIsFavorited(article.favorited);
+    setFavoritesCount(article.favoritesCount);
+    setIsFollowing(article.author ? article.author.following : false);
+  }, [article]);
 
-  async function handleToggleFavorite(e) {
-    e.currentTarget.blur()
+  const handleToggleFavorite = async (e) => {
+    e.currentTarget.blur();
     // require to be logged in
     if (!currUser) {
-      return
+      return;
     }
 
     try {
@@ -63,29 +64,23 @@ function Article(props) {
       const url = `${BASE_URL}/articles/${articleId}/favorite`;
       await axios.post(url, {}, {
         headers: {
-          'Authentication': `Bearer: ${currUser.token}`
-        }
+          Authentication: `Bearer: ${currUser.token}`,
+        },
       });
 
       // toggle the ui
       if (isFavorited) {
-        setFavoritesCount(favoritesCount - 1)
-        setIsFavorited(false)
+        setFavoritesCount(favoritesCount - 1);
+        setIsFavorited(false);
         return;
       }
 
-      setIsFavorited(true)
-      setFavoritesCount(favoritesCount + 1)
+      setIsFavorited(true);
+      setFavoritesCount(favoritesCount + 1);
+    } catch (err) {
+      console.log(err);
     }
-    catch (err) {
-      console.log(err)
-    }
-
   };
-
-  if (author) {
-    var { image, username } = author;
-  }
 
   return (
     <div className="article-page">
@@ -94,8 +89,16 @@ function Article(props) {
         <div className="container">
           <h1>{title}</h1>
 
-          <ArticleMeta username={username} image={image} createdAt={createdAt} favoritesCount={favoritesCount} isFavorited={isFavorited}
-            currUser={currUser} handleToggleFavorite={handleToggleFavorite} />
+          <ArticleMeta
+            username={author.username}
+            image={author.image}
+            createdAt={createdAt}
+            favoritesCount={favoritesCount}
+            isFavorited={isFavorited}
+            isFollowing={isFollowing}
+            currUser={currUser}
+            handleToggleFavorite={handleToggleFavorite}
+          />
         </div>
       </div>
 
@@ -108,12 +111,18 @@ function Article(props) {
               <ReactMarkdown>
                 {body}
               </ReactMarkdown>
-              <p className="font-italic text-sm-right"><small>Last updated at  {new Date(updatedAt).toDateString()}</small></p>
+              <p className="font-italic text-sm-right">
+                <small>
+                  Last updated at
+                  {new Date(updatedAt).toDateString()}
+                </small>
+              </p>
             </div>
 
-            <ul className="tag-list" >
+            <ul className="tag-list">
               {tagList.map((tag, index) => (
-                <a href="" key={index} className="tag-default tag-pill tag-outline" >
+                // eslint-disable-next-line jsx-a11y/anchor-is-valid, react/no-array-index-key
+                <a href="" key={index} className="tag-default tag-pill tag-outline">
                   {tag}
                 </a>
               ))}
@@ -124,8 +133,16 @@ function Article(props) {
         <hr />
 
         <div className="article-actions">
-          <ArticleMeta username={username} createdAt={createdAt} favoritesCount={favoritesCount} image={image} isFavorited={isFavorited}
-            currUser={currUser} handleToggleFavorite={handleToggleFavorite} />
+          <ArticleMeta
+            username={author.username}
+            image={author.image}
+            createdAt={createdAt}
+            favoritesCount={favoritesCount}
+            isFavorited={isFavorited}
+            isFollowing={isFollowing}
+            currUser={currUser}
+            handleToggleFavorite={handleToggleFavorite}
+          />
         </div>
 
         <Comments articleId={articleId} />
@@ -133,8 +150,7 @@ function Article(props) {
       </div>
 
     </div>
-  )
-
+  );
 }
 
-export default connect((state) => ({ currUser: state.currUser }), {})(Article)
+export default connect((state) => ({ currUser: state.currUser }), {})(Article);

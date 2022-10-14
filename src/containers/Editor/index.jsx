@@ -1,12 +1,13 @@
-import { useState } from 'react';
+/* eslint-disable react/prop-types */
+import React, { useState } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
 
 function Editor(props) {
   const { currUser } = props;
   const [article, setArticle] = useState({});
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   function collectData(e, dataType) {
     const { value } = e.target;
@@ -14,7 +15,7 @@ function Editor(props) {
       const reg = /\s+/;
       const tagList = [...new Set(value.trim().split(reg))];
       setArticle({ ...article, tagList });
-      return
+      return;
     }
     setArticle({ ...article, [dataType]: value });
   }
@@ -24,15 +25,15 @@ function Editor(props) {
     const BASE_URL = process.env.REACT_APP_BASE_URL;
     axios.post(`${BASE_URL}/articles`, { article }, {
       headers: {
-        'Authentication': `Bearer: ${currUser.token}`
-      }
+        Authentication: `Bearer: ${currUser.token}`,
+      },
     })
-      .then(res => {
+      .then(() => {
         // console.log(res);
         // jump to the home
-        navigate('/home')
+        navigate('/home');
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   }
@@ -46,26 +47,41 @@ function Editor(props) {
             <form onSubmit={handleSubmit}>
               <fieldset>
                 <fieldset className="form-group">
-                  <input type="text" className="form-control form-control-lg" placeholder="Article Title" required
-                    onChange={(e) => collectData(e, 'title')} />
+                  <input
+                    type="text"
+                    className="form-control form-control-lg"
+                    placeholder="Article Title"
+                    required
+                    onChange={(e) => collectData(e, 'title')}
+                  />
                 </fieldset>
                 <fieldset className="form-group">
-                  <input type="text" className="form-control" placeholder="What's this article about?" required
-                    onChange={(e) => collectData(e, 'description')} />
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="What's this article about?"
+                    required
+                    onChange={(e) => collectData(e, 'description')}
+                  />
                 </fieldset>
                 <fieldset className="form-group">
-                  <textarea className="form-control" rows="8" placeholder="Write your article (in markdown)" required
-
-                    onChange={(e) => collectData(e, 'body')}></textarea>
+                  <textarea
+                    className="form-control"
+                    rows="8"
+                    placeholder="Write your article (in markdown)"
+                    required
+                    onChange={(e) => collectData(e, 'body')}
+                  />
                 </fieldset>
                 <fieldset className="form-group">
-                  <input type="text" className="form-control" placeholder="Enter tags divided by space"
-                    onChange={(e) => collectData(e, 'tags')} />
-                  <div className="tag-list">
-
-                  </div>
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Enter tags divided by space"
+                    onChange={(e) => collectData(e, 'tags')}
+                  />
                 </fieldset>
-                <button className="btn btn-lg pull-xs-right btn-primary">
+                <button className="btn btn-lg pull-xs-right btn-primary" type="submit">
                   Publish Article
                 </button>
               </fieldset>
@@ -74,8 +90,8 @@ function Editor(props) {
 
         </div>
       </div>
-    </div >
+    </div>
   );
-};
+}
 
-export default connect((state) => ({ currUser: state.currUser }), {})(Editor)
+export default connect((state) => ({ currUser: state.currUser }), {})(Editor);
