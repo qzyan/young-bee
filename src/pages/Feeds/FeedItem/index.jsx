@@ -17,6 +17,7 @@ export default function FeedItem(props) {
     e.currentTarget.blur();
     // require to be logged in
     if (!currUser) {
+      alert('Please log in');
       return;
     }
 
@@ -24,19 +25,27 @@ export default function FeedItem(props) {
       // send ajax request to toggle favoite
       const BASE_URL = process.env.REACT_APP_BASE_URL;
       const url = `${BASE_URL}/articles/${articleId}/favorite`;
-      await axios.post(url, {}, {
-        headers: {
-          Authentication: `Bearer: ${currUser.token}`,
-        },
-      });
 
-      // toggle the ui
+      // currently favorited, send request to unfavorite
       if (isFavorited) {
+        await axios.delete(url, {
+          headers: {
+            Authentication: `Bearer: ${currUser.token}`,
+          },
+        });
+        // toggle the ui
         favCountEl.current.innerText = parseInt(favCountEl.current.innerText, 10) - 1;
         setIsFavorited(false);
         return;
       }
 
+      // currently unfavorited, send request to favorite
+      await axios.post(url, {}, {
+        headers: {
+          Authentication: `Bearer: ${currUser.token}`,
+        },
+      });
+      // toggle the ui
       setIsFavorited(true);
       favCountEl.current.innerText = parseInt(favCountEl.current.innerText, 10) + 1;
     } catch (err) {
