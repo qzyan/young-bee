@@ -1,4 +1,5 @@
-import { useRef, useState } from 'react';
+/* eslint-disable react/prop-types */
+import React, { useRef, useState } from 'react';
 import axios from 'axios';
 import { NavLink, Link } from 'react-router-dom';
 import TimeAgo from 'timeago-react';
@@ -6,16 +7,17 @@ import defaultAvatar from '../../../assets/avatar.png';
 
 export default function FeedItem(props) {
   const { article, currUser } = props;
-  let { _id: articleId, title, description, createdAt, favorited, favoritesCount, tagList, author: { username, image } } = article;
+  // eslint-disable-next-line max-len, object-curly-newline
+  const { _id: articleId, title, description, createdAt, favorited, favoritesCount, tagList, author: { username, image } } = article;
   const [isFavorited, setIsFavorited] = useState(favorited);
 
   const favCountEl = useRef(null);
 
   async function handleToggleFavorite(e) {
-    e.currentTarget.blur()
+    e.currentTarget.blur();
     // require to be logged in
     if (!currUser) {
-      return
+      return;
     }
 
     try {
@@ -24,25 +26,23 @@ export default function FeedItem(props) {
       const url = `${BASE_URL}/articles/${articleId}/favorite`;
       await axios.post(url, {}, {
         headers: {
-          'Authentication': `Bearer: ${currUser.token}`
-        }
+          Authentication: `Bearer: ${currUser.token}`,
+        },
       });
 
       // toggle the ui
       if (isFavorited) {
-        favCountEl.current.innerText = parseInt(favCountEl.current.innerText) - 1;
-        setIsFavorited(false)
+        favCountEl.current.innerText = parseInt(favCountEl.current.innerText, 10) - 1;
+        setIsFavorited(false);
         return;
       }
 
-      setIsFavorited(true)
-      favCountEl.current.innerText = parseInt(favCountEl.current.innerText) + 1
+      setIsFavorited(true);
+      favCountEl.current.innerText = parseInt(favCountEl.current.innerText, 10) + 1;
+    } catch (err) {
+      console.log(err);
     }
-    catch (err) {
-      console.log(err)
-    }
-
-  };
+  }
 
   return (
     <div className="article-preview">
@@ -54,9 +54,13 @@ export default function FeedItem(props) {
             <TimeAgo datetime={createdAt} />
           </span>
         </div>
-        <button className={`btn btn-outline-primary btn-sm pull-xs-right ${(isFavorited ? 'active' : '')}`}
-          onClick={handleToggleFavorite}>
-          <i className="ion-heart"></i> <span ref={favCountEl}>{favoritesCount}</span>
+        <button
+          type="button"
+          className={`btn btn-outline-primary btn-sm pull-xs-right ${(isFavorited ? 'active' : '')}`}
+          onClick={handleToggleFavorite}
+        >
+          <i className="ion-heart" />
+          <span ref={favCountEl}>{favoritesCount}</span>
         </button>
       </div>
       <Link to={`/article/${articleId}`} className="preview-link">
@@ -64,13 +68,14 @@ export default function FeedItem(props) {
         <p>{description}</p>
         <span>Read more...</span>
       </Link>
-      <ul className="tag-list pull-xs-right" >
+      <ul className="tag-list pull-xs-right">
         {tagList.map((tag, index) => (
-          <a href="" key={index} className="tag-default tag-pill tag-outline" >
+          // eslint-disable-next-line react/no-array-index-key
+          <a href="/" key={index} className="tag-default tag-pill tag-outline">
             {tag}
           </a>
         ))}
       </ul>
     </div>
-  )
+  );
 }

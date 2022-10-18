@@ -52,6 +52,7 @@ export default function ArticleMeta(props) {
     e.currentTarget.blur();
     // require to be logged in
     if (!currUser) {
+      alert('need login');
       return;
     }
 
@@ -59,18 +60,27 @@ export default function ArticleMeta(props) {
       // send ajax request to toggle favoite
       const BASE_URL = process.env.REACT_APP_BASE_URL;
       const url = `${BASE_URL}/articles/${articleId}/favorite`;
+
+      // currently favorited, send ajax request to unfavoirte
+      if (isFavorited) {
+        await axios.delete(url, {
+          headers: {
+            Authentication: `Bearer: ${currUser.token}`,
+          },
+        });
+
+        // toggle the ui
+        setFavoritesCount(favoritesCount - 1);
+        setIsFavorited(false);
+        return;
+      }
+
+      // currently unfavorited, send ajax request to favoirte
       await axios.post(url, {}, {
         headers: {
           Authentication: `Bearer: ${currUser.token}`,
         },
       });
-
-      // toggle the ui
-      if (isFavorited) {
-        setFavoritesCount(favoritesCount - 1);
-        setIsFavorited(false);
-        return;
-      }
 
       setIsFavorited(true);
       setFavoritesCount(favoritesCount + 1);
