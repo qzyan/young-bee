@@ -51,37 +51,6 @@ function Article(props) {
     setIsFollowing(article.author ? article.author.following : false);
   }, [article]);
 
-  const handleToggleFavorite = async (e) => {
-    e.currentTarget.blur();
-    // require to be logged in
-    if (!currUser) {
-      return;
-    }
-
-    try {
-      // send ajax request to toggle favoite
-      const BASE_URL = process.env.REACT_APP_BASE_URL;
-      const url = `${BASE_URL}/articles/${articleId}/favorite`;
-      await axios.post(url, {}, {
-        headers: {
-          Authentication: `Bearer: ${currUser.token}`,
-        },
-      });
-
-      // toggle the ui
-      if (isFavorited) {
-        setFavoritesCount(favoritesCount - 1);
-        setIsFavorited(false);
-        return;
-      }
-
-      setIsFavorited(true);
-      setFavoritesCount(favoritesCount + 1);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   return (
     <div className="article-page">
 
@@ -96,8 +65,11 @@ function Article(props) {
             favoritesCount={favoritesCount}
             isFavorited={isFavorited}
             isFollowing={isFollowing}
+            setIsFavorited={setIsFavorited}
+            setFavoritesCount={setFavoritesCount}
+            setIsFollowing={setIsFollowing}
             currUser={currUser}
-            handleToggleFavorite={handleToggleFavorite}
+            articleId={articleId}
           />
         </div>
       </div>
@@ -140,8 +112,11 @@ function Article(props) {
             favoritesCount={favoritesCount}
             isFavorited={isFavorited}
             isFollowing={isFollowing}
+            setIsFavorited={setIsFavorited}
+            setFavoritesCount={setFavoritesCount}
+            setIsFollowing={setIsFollowing}
             currUser={currUser}
-            handleToggleFavorite={handleToggleFavorite}
+            articleId={articleId}
           />
         </div>
 
