@@ -1,23 +1,17 @@
+/* eslint-disable no-shadow */
+/* eslint-disable react/prop-types */
+/* eslint-disable react/destructuring-assignment */
 import { connect } from 'react-redux';
-import { createLoginAction } from '../../redux/actions/currUser';
-import { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom'
+import React, { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
+import { createLoginAction } from '../../redux/actions/currUser';
 
-//define UI component
+// define UI component
 function Login(props) {
   const [user, setUser] = useState({});
-  const [isLogin, setIsLogin] = useState(false);
-  const navigate = useNavigate()
-
-  useEffect(() => {
-    setIsLogin(props.isLogin);
-  }, [props.isLogin]);
-
-  function toggleIsLogin(event) {
-    event.preventDefault();
-    setIsLogin(!isLogin);
-  };
+  const navigate = useNavigate();
+  const { isLogin } = props;
 
   function collectData(e, dataType) {
     const { value } = e.target;
@@ -28,19 +22,18 @@ function Login(props) {
   function handleSubmit(e) {
     e.preventDefault();
     const BASE_URL = process.env.REACT_APP_BASE_URL;
-    const url = isLogin ? `${BASE_URL}/users/login` : `${BASE_URL}/users`
+    const url = isLogin ? `${BASE_URL}/users/login` : `${BASE_URL}/users`;
     axios.post(url, { user })
-      .then(res => {
+      .then((res) => {
         const { user } = res.data;
         // update the currUser in redux
         props.login(user);
         // jump to home
-        navigate(-1)
-
+        navigate(-1);
       })
       .then(() => {
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   }
@@ -53,30 +46,50 @@ function Login(props) {
             <h1 className="text-xs-center">{isLogin ? 'Sign in' : 'Sign up'}</h1>
             <p className="text-xs-center">
               {isLogin
-                ? <Link to="/register" >Need a new account?</Link>
-                : <Link to="/login" >Have an account?</Link>}
+                ? <Link to="/register">Need a new account?</Link>
+                : <Link to="/login">Have an account?</Link>}
 
             </p>
             <form onSubmit={handleSubmit}>
               {isLogin
                 ? null
-                : <fieldset className="form-group">
-                  <input className="form-control form-control-lg" type="text" placeholder="Your Name"
-                    name="username" required
-                    onChange={(e) => collectData(e, 'username')} />
-                </fieldset>}
+                : (
+                  <fieldset className="form-group">
+                    <input
+                      className="form-control form-control-lg"
+                      type="text"
+                      placeholder="Your Name"
+                      name="username"
+                      required
+                      onChange={(e) => collectData(e, 'username')}
+                    />
+                  </fieldset>
+                )}
 
               <fieldset className="form-group">
-                <input className="form-control form-control-lg" type="email" placeholder="Email"
-                  name="email" required
-                  onChange={(e) => collectData(e, 'email')} />
+                <input
+                  className="form-control form-control-lg"
+                  type="email"
+                  placeholder="Email"
+                  name="email"
+                  required
+                  onChange={(e) => collectData(e, 'email')}
+                />
               </fieldset>
               <fieldset className="form-group">
-                <input className="form-control form-control-lg" type="password" placeholder="Password"
-                  name="password" required
-                  onChange={(e) => collectData(e, 'password')} />
+                <input
+                  className="form-control form-control-lg"
+                  type="password"
+                  placeholder="Password"
+                  name="password"
+                  required
+                  onChange={(e) => collectData(e, 'password')}
+                />
               </fieldset>
-              <button className="btn btn-lg btn-primary pull-xs-right">
+              <button
+                className="btn btn-lg btn-primary pull-xs-right"
+                type="submit"
+              >
                 {isLogin ? 'Sign in' : 'Sign up'}
               </button>
             </form>
@@ -88,15 +101,16 @@ function Login(props) {
   );
 }
 
-
-// return an object, key as the props.key that pass to UI, value as props.key's value that pass to UI----redux's state
+// return an object, key as the props.key that pass to UI,
+// value as props.key's value that pass to UI----redux's state
 function mapStateToProps(state) {
   return {
-    currUser: state.currUser
+    currUser: state.currUser,
   };
 }
 
-// return an object, key as the props.key that pass to UI, value as props.key's value that pass to UI----redux's method
+// return an object, key as the props.key that pass to UI,
+// value as props.key's value that pass to UI----redux's method
 // function mapDispatchToProps (dispatch) {
 //   return {
 //     login: (data) => {
@@ -107,6 +121,6 @@ function mapStateToProps(state) {
 // }
 
 // can be simplified to an object
-const mapDispatchToProps = { login: createLoginAction }
+const mapDispatchToProps = { login: createLoginAction };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

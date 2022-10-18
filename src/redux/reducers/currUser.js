@@ -1,3 +1,4 @@
+/* eslint-disable default-param-last */
 /*
 create a function that
 init currUser

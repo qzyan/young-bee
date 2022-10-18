@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-boolean-value */
+import React from 'react';
 import { Navigate } from 'react-router-dom';
 import Login from '../containers/Login';
 import Feeds from '../pages/Feeds';
@@ -6,40 +8,37 @@ import Profile from '../pages/Profile';
 import Settings from '../pages/Settings';
 import Article from '../pages/Article';
 
-
-// eslint-disable-next-line import/no-anonymous-default-export
 export default [
   {
     path: '/home',
-    element: <Feeds />
+    element: <Feeds />,
   },
   {
     path: '/login',
-    element: <Login isLogin={true} />
+    element: <Login isLogin={true} />,
   },
   {
     path: '/register',
-    element: <Login isLogin={false} />
+    element: <Login isLogin={false} />,
   },
   {
     path: '/editor',
-    element: <Editor />
+    element: <Editor />,
   },
   {
     path: '/profile/:username',
-    element: <Profile />
+    element: <Profile />,
   },
   {
     path: '/settings',
-    element: <Settings />
+    element: <Settings />,
   },
   {
     path: '/article/:articleId',
-    element: <Article />
+    element: <Article />,
   },
   {
     path: '/*',
-    element: <Navigate to="/home" replace />
-  }
-
-]
+    element: <Navigate to="/home" replace />,
+  },
+];

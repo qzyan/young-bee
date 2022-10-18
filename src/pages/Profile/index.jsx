@@ -1,4 +1,7 @@
+import React from 'react';
+
 export default function Profile(props) {
+  console.log(props);
   return (
     <div className="profile-page">
 
@@ -7,14 +10,13 @@ export default function Profile(props) {
           <div className="row">
 
             <div className="col-xs-12 col-md-10 offset-md-1">
-              <img src="http://i.imgur.com/Qr71crq.jpg" className="user-img" />
+              <img src="http://i.imgur.com/Qr71crq.jpg" alt="" className="user-img" />
               <h4>Eric Simons</h4>
               <p>
-                Cofounder @GoThinkster, lived in Aol's HQ for a few months, kinda looks like Peeta from the
-                Hunger Games
+                Cofounder @GoThinkster
               </p>
-              <button className="btn btn-sm btn-outline-secondary action-btn">
-                <i className="ion-plus-round"></i>
+              <button className="btn btn-sm btn-outline-secondary action-btn" type="button">
+                <i className="ion-plus-round" />
                 &nbsp;
                 Follow Eric Simons
               </button>
@@ -31,26 +33,27 @@ export default function Profile(props) {
             <div className="articles-toggle">
               <ul className="nav nav-pills outline-active">
                 <li className="nav-item">
-                  <a className="nav-link active" href="">My Articles</a>
+                  <a className="nav-link active" href="/">My Articles</a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="">Favorited Articles</a>
+                  <a className="nav-link" href="/">Favorited Articles</a>
                 </li>
               </ul>
             </div>
 
             <div className="article-preview">
               <div className="article-meta">
-                <a href=""><img src="http://i.imgur.com/Qr71crq.jpg" /></a>
+                <a href="/"><img src="http://i.imgur.com/Qr71crq.jpg" alt="/" /></a>
                 <div className="info">
-                  <a href="" className="author">Eric Simons</a>
+                  <a href="/" className="author">Eric Simons</a>
                   <span className="date">January 20th</span>
                 </div>
-                <button className="btn btn-outline-primary btn-sm pull-xs-right">
-                  <i className="ion-heart"></i> 29
+                <button className="btn btn-outline-primary btn-sm pull-xs-right" type="button">
+                  <i className="ion-heart" />
+                  29
                 </button>
               </div>
-              <a href="" className="preview-link">
+              <a href="/" className="preview-link">
                 <h1>How to build webapps that scale</h1>
                 <p>This is the description for the post.</p>
                 <span>Read more...</span>
@@ -59,17 +62,18 @@ export default function Profile(props) {
 
             <div className="article-preview">
               <div className="article-meta">
-                <a href=""><img src="http://i.imgur.com/N4VcUeJ.jpg" /></a>
+                <a href="/"><img src="http://i.imgur.com/N4VcUeJ.jpg" alt="/" /></a>
                 <div className="info">
-                  <a href="" className="author">Albert Pai</a>
+                  <a href="/" className="author">Albert Pai</a>
                   <span className="date">January 20th</span>
                 </div>
-                <button className="btn btn-outline-primary btn-sm pull-xs-right">
-                  <i className="ion-heart"></i> 32
+                <button className="btn btn-outline-primary btn-sm pull-xs-right" type="button">
+                  <i className="ion-heart" />
+                  32
                 </button>
               </div>
-              <a href="" className="preview-link">
-                <h1>The song you won't ever stop singing. No matter how hard you try.</h1>
+              <a href="/" className="preview-link">
+                <h1>The song you will not ever stop singing. No matter how hard you try.</h1>
                 <p>This is the description for the post.</p>
                 <span>Read more...</span>
                 <ul className="tag-list">
@@ -79,12 +83,11 @@ export default function Profile(props) {
               </a>
             </div>
 
-
           </div>
 
         </div>
       </div>
 
     </div>
-  )
+  );
 }

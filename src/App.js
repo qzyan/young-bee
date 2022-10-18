@@ -1,15 +1,15 @@
+/* eslint-disable react/jsx-filename-extension */
+import React from 'react';
 import './App.css';
 import { useRoutes } from 'react-router-dom';
 import Header from './containers/Header';
-
-import store from './redux/store';
 import routes from './routes';
 
 function App() {
-  const elements = useRoutes(routes)
+  const elements = useRoutes(routes);
   return (
     <div className="App">
-      <Header store={store} />
+      <Header />
       {elements}
     </div>
   );

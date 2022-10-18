@@ -1,5 +1,6 @@
+import React from 'react';
 
-export default function GlobalFeeds(props) {
+export default function GlobalFeeds() {
   function handleLogout() {
   }
 
@@ -8,7 +9,7 @@ export default function GlobalFeeds(props) {
       <div className="container page">
         <div className="row">
 
-          <div className="col-md-6 offset-md-3 col-xs-12" >
+          <div className="col-md-6 offset-md-3 col-xs-12">
             <h1 className="text-xs-center">Your Settings</h1>
 
             <form>
@@ -20,23 +21,34 @@ export default function GlobalFeeds(props) {
                   <input className="form-control form-control-lg" type="text" placeholder="Your Name" />
                 </fieldset>
                 <fieldset className="form-group">
-                  <textarea className="form-control form-control-lg" rows="8" placeholder="Short bio about you"></textarea>
+                  <textarea
+                    className="form-control form-control-lg"
+                    rows="8"
+                    placeholder="Short bio about you"
+                  />
                 </fieldset>
                 <fieldset className="form-group">
                   <input className="form-control form-control-lg" type="text" placeholder="Email" />
                 </fieldset>
                 {/* {<fieldset className="form-group">
-              <input className="form-control form-control-lg" type="password" placeholder="Password">
+              <input
+              className="form-control form-control-lg" type="password" placeholder="Password">
             </fieldset>} */}
-                <button className="btn btn-lg btn-primary pull-xs-right">
+                <button
+                  className="btn btn-lg btn-primary pull-xs-right"
+                  type="button"
+                >
                   Update Settings
                 </button>
               </fieldset>
             </form>
             <hr />
             <a href="/logout">
-              <button className="btn btn-outline-danger"
-                onClick={handleLogout}>
+              <button
+                className="btn btn-outline-danger"
+                onClick={handleLogout}
+                type="button"
+              >
                 Or click here to logout.
               </button>
             </a>
@@ -45,5 +57,5 @@ export default function GlobalFeeds(props) {
         </div>
       </div>
     </div>
-  )
-};
+  );
+}

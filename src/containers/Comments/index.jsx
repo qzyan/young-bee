@@ -1,6 +1,11 @@
-import { useState, useRef, useEffect } from 'react';
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable max-len */
+/* eslint-disable no-shadow */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react/prop-types */
+import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import CommentItem from './CommentItem';
 import defaultAvatar from '../../assets/avatar.png';
@@ -11,27 +16,24 @@ function Comments(props) {
   const [comments, setComments] = useState([]);
   const inputEl = useRef(null);
 
-  if (currUser) {
-    var { image, username } = currUser
-  }
+  const { image } = currUser;
 
   // send ajax to get comments when component mounted
   useEffect(() => {
-
-    getComments();
-
     async function getComments() {
-      try{
+      try {
         const BASE_URL = process.env.REACT_APP_BASE_URL;
         const url = `${BASE_URL}/articles/${articleId}/comments`;
         const res = await axios.get(url);
-        var { data: { comments } } = res;
+        const { data: { comments } } = res;
         setComments(comments);
-      }catch(err) {
-        console.log(err)
+      } catch (err) {
+        console.log(err);
       }
-    };
-  }, [])
+    }
+
+    getComments();
+  }, []);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -39,16 +41,16 @@ function Comments(props) {
     const BASE_URL = process.env.REACT_APP_BASE_URL;
     axios.post(`${BASE_URL}/articles/${articleId}/comments`, { comment: { body } }, {
       headers: {
-        'Authentication': `Bearer: ${currUser.token}`
-      }
+        Authentication: `Bearer: ${currUser.token}`,
+      },
     })
-      .then(res => {
+      .then((res) => {
         const { comment } = res.data;
         const newComments = [comment, ...comments];
-        setComments(newComments)
-        inputEl.current.value = ''
+        setComments(newComments);
+        inputEl.current.value = '';
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   }
@@ -57,30 +59,42 @@ function Comments(props) {
 
     <div className="row">
       <div className="col-xs-12 col-md-8 offset-md-2">
-        {currUser ?
-          <form className="card comment-form"
-            onSubmit={handleSubmit}>
-            <div className="card-block">
-              <textarea ref={inputEl} className="form-control" placeholder="Write a comment..." rows="3"></textarea>
-            </div>
-            <div className="card-footer">
-              {currUser
-                ? <img src={image || defaultAvatar} className="comment-author-img" />
-                : null
-              }
-              <button className="btn btn-sm btn-primary">
-                Post Comment
-              </button>
-            </div>
-          </form> :
-          <Link to="/login">
-            <div className="card">
+        {currUser
+          ? (
+            <form
+              className="card comment-form"
+              onSubmit={handleSubmit}
+            >
               <div className="card-block">
-                <p className="card-text">What are Your thoughts?</p>
+                <textarea
+                  ref={inputEl}
+                  className="form-control"
+                  placeholder="Write a comment..."
+                  rows="3"
+                />
               </div>
-            </div>
-          </Link>
-        }
+              <div className="card-footer">
+                {currUser
+                  ? <img src={image || defaultAvatar} alt="" className="comment-author-img" />
+                  : null}
+                <button
+                  className="btn btn-sm btn-primary"
+                  type="button"
+                >
+                  Post Comment
+                </button>
+              </div>
+            </form>
+          )
+          : (
+            <Link to="/login">
+              <div className="card">
+                <div className="card-block">
+                  <p className="card-text">What are Your thoughts?</p>
+                </div>
+              </div>
+            </Link>
+          )}
 
         {comments.map((comment) => <CommentItem key={comment._id} comment={comment} currUser={currUser} />)}
 
@@ -90,4 +104,4 @@ function Comments(props) {
   );
 }
 
-export default connect((state) => ({ currUser: state.currUser }), {})(Comments)
+export default connect((state) => ({ currUser: state.currUser }), {})(Comments);
