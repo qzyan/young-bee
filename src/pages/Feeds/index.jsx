@@ -15,34 +15,38 @@ function Feeds(props) {
   const [pagesCount, setPagesCount] = useState(0);
 
   const { currUser, feedsType, username } = props;
-  console.log(feedsType);
   // when current page changes, get the feeds list and feeds count from api
   useEffect(() => {
     async function fetchArticlesData(url, limit, offset, token, tag, author) {
       const res = await getArticles(url, limit, offset, token, tag, author);
       const { articles, articlesCount } = res.data;
       const pagesCount = Math.ceil(articlesCount / limit);
-      console.log(articlesCount);
       setArticles(articles);
       setPagesCount(pagesCount);
     }
     const BASE_URL = process.env.REACT_APP_BASE_URL;
-    const url = `${BASE_URL}/articles`;
     const limit = 3;
     const offset = (currPage - 1) * limit;
     const { token } = currUser || {};
     if (feedsType === 'global') {
+      const url = `${BASE_URL}/articles`;
       fetchArticlesData(url, limit, offset, token);
     }
 
     if (feedsType === 'personal') {
-      fetchArticlesData(url, limit, offset, token, undefined, username);
+      const url = `${BASE_URL}/articles/feed`;
+      fetchArticlesData(url, limit, offset, token);
     }
 
     if (feedsType === 'profile') {
+      const url = `${BASE_URL}/articles`;
       fetchArticlesData(url, limit, offset, token, undefined, username);
     }
   }, [currPage, pagesCount, feedsType]);
+
+  useEffect(() => {
+    setCurrpage(1);
+  }, [feedsType]);
 
   const changeCurrPage = (e) => {
     e.preventDefault();
