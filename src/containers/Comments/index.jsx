@@ -16,7 +16,7 @@ function Comments(props) {
   const [comments, setComments] = useState([]);
   const inputEl = useRef(null);
 
-  const { image } = currUser;
+  const { image } = currUser || {};
 
   // send ajax to get comments when component mounted
   useEffect(() => {
@@ -79,7 +79,7 @@ function Comments(props) {
                   : null}
                 <button
                   className="btn btn-sm btn-primary"
-                  type="button"
+                  type="submit"
                 >
                   Post Comment
                 </button>

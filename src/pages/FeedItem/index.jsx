@@ -3,14 +3,13 @@ import React, { useRef, useState } from 'react';
 import axios from 'axios';
 import { NavLink, Link } from 'react-router-dom';
 import TimeAgo from 'timeago-react';
-import defaultAvatar from '../../../assets/avatar.png';
+import defaultAvatar from '../../assets/avatar.png';
 
 export default function FeedItem(props) {
   const { article, currUser } = props;
   // eslint-disable-next-line max-len, object-curly-newline
   const { _id: articleId, title, description, createdAt, favorited, favoritesCount, tagList, author: { username, image } } = article;
   const [isFavorited, setIsFavorited] = useState(favorited);
-
   const favCountEl = useRef(null);
 
   async function handleToggleFavorite(e) {
@@ -56,9 +55,9 @@ export default function FeedItem(props) {
   return (
     <div className="article-preview">
       <div className="article-meta">
-        <NavLink to="/profile/123"><img alt="avatar" src={image || defaultAvatar} /></NavLink>
+        <NavLink to={`/profile/${username}`}><img alt="avatar" src={image || defaultAvatar} /></NavLink>
         <div className="info">
-          <NavLink to="/profile/123" className="author">{username}</NavLink>
+          <NavLink to={`/profile/${username}`} className="author">{username}</NavLink>
           <span className="date">
             <TimeAgo datetime={createdAt} />
           </span>

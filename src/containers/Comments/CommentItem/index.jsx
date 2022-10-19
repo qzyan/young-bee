@@ -8,7 +8,7 @@ export default function CommentItem(props) {
   const { comment, currUser } = props;
   const { body, createdAt, favoritesCount, author: { image, username, _id: authorId } } = comment;
 
-  const { username: currUsername, _id: currUserId, image: currImage } = currUser;
+  const { username: currUsername, _id: currUserId, image: currImage } = currUser || {};
 
   return (
     <div className="card">

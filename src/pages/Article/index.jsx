@@ -85,7 +85,7 @@ function Article(props) {
               </ReactMarkdown>
               <p className="font-italic text-sm-right">
                 <small>
-                  Last updated at
+                  {'Last updated at '}
                   {new Date(updatedAt).toDateString()}
                 </small>
               </p>

@@ -1,7 +1,41 @@
-import React from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable max-len */
+/* eslint-disable react/prop-types */
+/* eslint-disable no-shadow */
+// eslint-disable-next-line no-unused-vars
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
+import defaultAvatar from '../../assets/avatar.png';
+import Feeds from '../Feeds';
+// import Tags from '../Tags';
 
-export default function Profile(props) {
-  console.log(props);
+function Profile() {
+  const [profile, setProfile] = useState({});
+  const { username } = useParams();
+
+  // const [isMyArticles, setIsMyArticles] = useState(true);
+
+  const { bio, image } = profile;
+
+  // get the user's bio and related articles when component is mounted
+  useEffect(() => {
+    async function fetchProfile() {
+      try {
+        const BASE_URL = process.env.REACT_APP_BASE_URL;
+        const url = `${BASE_URL}/profiles/${username}`;
+        const { data: { profile } } = await axios.get(url);
+        setProfile(profile);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+
+    fetchProfile();
+  }, []);
+
   return (
     <div className="profile-page">
 
@@ -10,15 +44,15 @@ export default function Profile(props) {
           <div className="row">
 
             <div className="col-xs-12 col-md-10 offset-md-1">
-              <img src="http://i.imgur.com/Qr71crq.jpg" alt="" className="user-img" />
-              <h4>Eric Simons</h4>
+              <img src={image || defaultAvatar} alt="" className="user-img" />
+              <h4>{username}</h4>
               <p>
-                Cofounder @GoThinkster
+                {bio}
               </p>
               <button className="btn btn-sm btn-outline-secondary action-btn" type="button">
                 <i className="ion-plus-round" />
                 &nbsp;
-                Follow Eric Simons
+                {`Follow ${username}`}
               </button>
             </div>
 
@@ -41,48 +75,7 @@ export default function Profile(props) {
               </ul>
             </div>
 
-            <div className="article-preview">
-              <div className="article-meta">
-                <a href="/"><img src="http://i.imgur.com/Qr71crq.jpg" alt="/" /></a>
-                <div className="info">
-                  <a href="/" className="author">Eric Simons</a>
-                  <span className="date">January 20th</span>
-                </div>
-                <button className="btn btn-outline-primary btn-sm pull-xs-right" type="button">
-                  <i className="ion-heart" />
-                  29
-                </button>
-              </div>
-              <a href="/" className="preview-link">
-                <h1>How to build webapps that scale</h1>
-                <p>This is the description for the post.</p>
-                <span>Read more...</span>
-              </a>
-            </div>
-
-            <div className="article-preview">
-              <div className="article-meta">
-                <a href="/"><img src="http://i.imgur.com/N4VcUeJ.jpg" alt="/" /></a>
-                <div className="info">
-                  <a href="/" className="author">Albert Pai</a>
-                  <span className="date">January 20th</span>
-                </div>
-                <button className="btn btn-outline-primary btn-sm pull-xs-right" type="button">
-                  <i className="ion-heart" />
-                  32
-                </button>
-              </div>
-              <a href="/" className="preview-link">
-                <h1>The song you will not ever stop singing. No matter how hard you try.</h1>
-                <p>This is the description for the post.</p>
-                <span>Read more...</span>
-                <ul className="tag-list">
-                  <li className="tag-default tag-pill tag-outline">Music</li>
-                  <li className="tag-default tag-pill tag-outline">Song</li>
-                </ul>
-              </a>
-            </div>
-
+            <Feeds feedsType="profile" username={username} />
           </div>
 
         </div>
@@ -91,3 +84,5 @@ export default function Profile(props) {
     </div>
   );
 }
+
+export default connect((state) => ({ currUser: state.currUser }), {})(Profile);

@@ -2,7 +2,7 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 import Login from '../containers/Login';
-import Feeds from '../pages/Feeds';
+import HomePage from '../pages/HomePage';
 import Editor from '../containers/Editor';
 import Profile from '../pages/Profile';
 import Settings from '../pages/Settings';
@@ -11,7 +11,7 @@ import Article from '../pages/Article';
 export default [
   {
     path: '/home',
-    element: <Feeds />,
+    element: <HomePage />,
   },
   {
     path: '/login',
