@@ -5,20 +5,23 @@
 /* eslint-disable no-shadow */
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import defaultAvatar from '../../assets/avatar.png';
 import Feeds from '../Feeds';
 // import Tags from '../Tags';
 
-function Profile() {
+export default function Profile() {
   const [profile, setProfile] = useState({});
+  const { bio, image } = profile;
+  const [feedsType, setFeedsType] = useState('profile');
   const { username } = useParams();
 
-  // const [isMyArticles, setIsMyArticles] = useState(true);
+  const toggleFeed = (e, feedsType) => {
+    e.preventDefault();
 
-  const { bio, image } = profile;
+    setFeedsType(feedsType);
+  };
 
   // get the user's bio and related articles when component is mounted
   useEffect(() => {
@@ -67,15 +70,15 @@ function Profile() {
             <div className="articles-toggle">
               <ul className="nav nav-pills outline-active">
                 <li className="nav-item">
-                  <a className="nav-link active" href="/">My Articles</a>
+                  <a className={`nav-link ${feedsType === 'profile' ? 'active' : ''}`} href="/" onClick={(e) => toggleFeed(e, 'profile')}>My Articles</a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="/">Favorited Articles</a>
+                  <a className={`nav-link ${feedsType === 'favorites' ? 'active' : ''}`} href="/" onClick={(e) => toggleFeed(e, 'favorites')}>Favorited Articles</a>
                 </li>
               </ul>
             </div>
 
-            <Feeds feedsType="profile" username={username} />
+            <Feeds feedsType={feedsType} username={username} />
           </div>
 
         </div>
@@ -84,5 +87,3 @@ function Profile() {
     </div>
   );
 }
-
-export default connect((state) => ({ currUser: state.currUser }), {})(Profile);

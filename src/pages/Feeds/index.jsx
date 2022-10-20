@@ -17,8 +17,8 @@ function Feeds(props) {
   const { currUser, feedsType, username } = props;
   // when current page changes, get the feeds list and feeds count from api
   useEffect(() => {
-    async function fetchArticlesData(url, limit, offset, token, tag, author) {
-      const res = await getArticles(url, limit, offset, token, tag, author);
+    async function fetchArticlesData(url, limit, offset, token, tag, author, favoritedBy) {
+      const res = await getArticles(url, limit, offset, token, tag, author, favoritedBy);
       const { articles, articlesCount } = res.data;
       const pagesCount = Math.ceil(articlesCount / limit);
       setArticles(articles);
@@ -42,6 +42,11 @@ function Feeds(props) {
       const url = `${BASE_URL}/articles`;
       fetchArticlesData(url, limit, offset, token, undefined, username);
     }
+
+    if (feedsType === 'favorites') {
+      const url = `${BASE_URL}/articles`;
+      fetchArticlesData(url, limit, offset, token, undefined, undefined, username);
+    }
   }, [currPage, pagesCount, feedsType]);
 
   useEffect(() => {
@@ -56,6 +61,7 @@ function Feeds(props) {
 
   return (
     <>
+      <h2>{feedsType}</h2>
       {articles.map((article) => <FeedItem key={article._id} article={article} currUser={currUser} />)}
       <Pages pagesCount={pagesCount} currPage={currPage} changeCurrPage={changeCurrPage} />
     </>
