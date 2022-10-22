@@ -1,11 +1,12 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import defaultAvatar from '../../../assets/avatar.png';
 
 export default function ArticleMeta(props) {
   // eslint-disable-next-line max-len, react/prop-types, object-curly-newline
-  const { username, createdAt, favoritesCount, image, isFavorited, isFollowing, setIsFavorited, setFavoritesCount, setIsFollowing, currUser, articleId } = props;
+  const { username, createdAt, favoritesCount, image, isFavorited, isFollowing, setIsFavorited, setFavoritesCount, setIsFollowing, currUser, articleId, article } = props;
 
   const handleFollow = () => {
     // auth required
@@ -96,17 +97,31 @@ export default function ArticleMeta(props) {
         <a href="/" className="author">{username}</a>
         <span className="date">{`Posted on ${new Date(createdAt).toDateString()}`}</span>
       </div>
-      <button
-        onClick={handleFollow}
-        className={`btn btn-sm btn-outline-secondary ${(isFollowing ? 'active' : '')}`}
-        type="button"
-      >
-        <i className="ion-plus-round" />
-        &nbsp;
-        {isFollowing ? 'Unfollow' : 'Follow'}
-        &nbsp;
-        {username}
-      </button>
+      {currUser && currUser.username === username
+        ? (
+          <Link
+            className="btn btn-sm btn-outline-secondary"
+            to="./update"
+            state={{ article }}
+          >
+            <i className="ion-compose" />
+            &nbsp;
+            Edit Post
+          </Link>
+        )
+        : (
+          <button
+            onClick={handleFollow}
+            className={`btn btn-sm btn-outline-secondary ${(isFollowing ? 'active' : '')}`}
+            type="button"
+          >
+            <i className="ion-plus-round" />
+            &nbsp;
+            {isFollowing ? 'Unfollow' : 'Follow'}
+            &nbsp;
+            {username}
+          </button>
+        )}
       &nbsp;&nbsp;
       <button
         className={`btn btn-sm btn-outline-primary ${(isFavorited ? 'active' : '')}`}

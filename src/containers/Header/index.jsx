@@ -30,7 +30,7 @@ function Header(props) {
                   </NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink className="nav-link" to="/profile">
+                  <NavLink className="nav-link" to={`/profile/${currUser.username}`}>
                     <img className="user-pic" src={currUser.image || defaultAvatar} alt="avatar" />
                     {currUser.username}
                   </NavLink>

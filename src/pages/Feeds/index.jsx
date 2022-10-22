@@ -61,7 +61,6 @@ function Feeds(props) {
 
   return (
     <>
-      <h2>{feedsType}</h2>
       {articles.map((article) => <FeedItem key={article._id} article={article} currUser={currUser} />)}
       <Pages pagesCount={pagesCount} currPage={currPage} changeCurrPage={changeCurrPage} />
     </>

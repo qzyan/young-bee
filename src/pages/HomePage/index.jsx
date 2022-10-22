@@ -26,7 +26,6 @@ function HomePage(props) {
 
   return (
     <div className="home-page">
-      <h2>{feedsType}</h2>
       <div className="banner">
         <div className="container">
           <h1 className="logo-font">hive</h1>

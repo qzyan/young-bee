@@ -38,6 +38,10 @@ export default [
     element: <Article />,
   },
   {
+    path: '/article/:articleId/update',
+    element: <Editor />,
+  },
+  {
     path: '/*',
     element: <Navigate to="/home" replace />,
   },

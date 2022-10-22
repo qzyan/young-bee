@@ -1,13 +1,17 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
 
 function Editor(props) {
   const { currUser } = props;
   const [article, setArticle] = useState({});
+  const { state } = useLocation();
+  const { article: prevArticle } = state || {};
   const navigate = useNavigate();
+  const { articleId } = useParams();
 
   function collectData(e, dataType) {
     const { value } = e.target;
@@ -19,10 +23,28 @@ function Editor(props) {
     }
     setArticle({ ...article, [dataType]: value });
   }
-  // send the ajax post request to create a new article
+  // send the ajax post request to create a new article or update an article
   function handleSubmit(e) {
     e.preventDefault();
     const BASE_URL = process.env.REACT_APP_BASE_URL;
+
+    // update article
+    if (prevArticle) {
+      axios.put(`${BASE_URL}/articles/${articleId}`, { article }, {
+        headers: {
+          Authentication: `Bearer: ${currUser.token}`,
+        },
+      })
+        .then(() => {
+          // console.log(res);
+          // jump to the home
+          navigate(-1);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      return;
+    }
     axios.post(`${BASE_URL}/articles`, { article }, {
       headers: {
         Authentication: `Bearer: ${currUser.token}`,
@@ -43,7 +65,6 @@ function Editor(props) {
       <div className="container page">
         <div className="row">
           <div className="col-md-10 offset-md-1 col-xs-12">
-            {currUser ? (<h3>Hello</h3>) : null}
             <form onSubmit={handleSubmit}>
               <fieldset>
                 <fieldset className="form-group">
@@ -53,6 +74,7 @@ function Editor(props) {
                     placeholder="Article Title"
                     required
                     onChange={(e) => collectData(e, 'title')}
+                    defaultValue={prevArticle ? prevArticle.title : ''}
                   />
                 </fieldset>
                 <fieldset className="form-group">
@@ -62,6 +84,7 @@ function Editor(props) {
                     placeholder="What's this article about?"
                     required
                     onChange={(e) => collectData(e, 'description')}
+                    defaultValue={prevArticle ? prevArticle.description : ''}
                   />
                 </fieldset>
                 <fieldset className="form-group">
@@ -71,6 +94,7 @@ function Editor(props) {
                     placeholder="Write your article (in markdown)"
                     required
                     onChange={(e) => collectData(e, 'body')}
+                    defaultValue={prevArticle ? prevArticle.body : ''}
                   />
                 </fieldset>
                 <fieldset className="form-group">
@@ -79,10 +103,11 @@ function Editor(props) {
                     className="form-control"
                     placeholder="Enter tags divided by space"
                     onChange={(e) => collectData(e, 'tags')}
+                    defaultValue={prevArticle ? prevArticle.tagList.join(' ') : ''}
                   />
                 </fieldset>
                 <button className="btn btn-lg pull-xs-right btn-primary" type="submit">
-                  Publish Article
+                  {prevArticle ? 'Update Article' : 'Publish Article'}
                 </button>
               </fieldset>
             </form>

@@ -70,6 +70,7 @@ function Article(props) {
             setIsFollowing={setIsFollowing}
             currUser={currUser}
             articleId={articleId}
+            article={article}
           />
         </div>
       </div>
@@ -117,6 +118,7 @@ function Article(props) {
             setIsFollowing={setIsFollowing}
             currUser={currUser}
             articleId={articleId}
+            article={article}
           />
         </div>
 
