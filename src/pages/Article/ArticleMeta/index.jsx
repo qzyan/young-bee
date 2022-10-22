@@ -1,12 +1,13 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import defaultAvatar from '../../../assets/avatar.png';
 
 export default function ArticleMeta(props) {
   // eslint-disable-next-line max-len, react/prop-types, object-curly-newline
   const { username, createdAt, favoritesCount, image, isFavorited, isFollowing, setIsFavorited, setFavoritesCount, setIsFollowing, currUser, articleId, article } = props;
+  const navigate = useNavigate();
 
   const handleFollow = () => {
     // auth required
@@ -47,6 +48,21 @@ export default function ArticleMeta(props) {
       .catch((e) => {
         console.log(e);
       });
+  };
+
+  const handleDelete = async () => {
+    const BASE_URL = process.env.REACT_APP_BASE_URL;
+    const url = `${BASE_URL}/articles/${articleId}`;
+    try {
+      await axios.delete(url, {
+        headers: {
+          Authentication: `Bearer: ${currUser.token}`,
+        },
+      });
+      navigate('/home');
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const handleToggleFavorite = async (e) => {
@@ -99,15 +115,27 @@ export default function ArticleMeta(props) {
       </div>
       {currUser && currUser.username === username
         ? (
-          <Link
-            className="btn btn-sm btn-outline-secondary"
-            to="./update"
-            state={{ article }}
-          >
-            <i className="ion-compose" />
-            &nbsp;
-            Edit Post
-          </Link>
+          <>
+            <Link
+              className="btn btn-sm btn-outline-secondary"
+              to="./update"
+              state={{ article }}
+            >
+              <i className="ion-compose" />
+              &nbsp;
+              Edit Post
+            </Link>
+            &nbsp;&nbsp;
+            <button
+              type="button"
+              className="btn btn-sm btn-outline-secondary"
+              onClick={handleDelete}
+            >
+              <i className="ion-android-delete" />
+              &nbsp;
+              Delete Post
+            </button>
+          </>
         )
         : (
           <button

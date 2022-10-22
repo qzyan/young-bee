@@ -68,6 +68,7 @@ export default function FeedItem(props) {
           onClick={handleToggleFavorite}
         >
           <i className="ion-heart" />
+          &nbsp;
           <span ref={favCountEl}>{favoritesCount}</span>
         </button>
       </div>
