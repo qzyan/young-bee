@@ -26,6 +26,10 @@ function Editor(props) {
   // send the ajax post request to create a new article or update an article
   function handleSubmit(e) {
     e.preventDefault();
+    if (!currUser) {
+      alert('Please Login');
+      return;
+    }
     const BASE_URL = process.env.REACT_APP_BASE_URL;
 
     // update article
