@@ -8,7 +8,6 @@ import defaultAvatar from '../../assets/avatar.png';
 
 export default function FeedItem(props) {
   const { article, currUser, setOpen } = props;
-  console.log('render feedItem');
   // eslint-disable-next-line max-len, object-curly-newline
   const { _id: articleId, title, description, createdAt, favorited, favoritesCount, tagList, author: { username, image } } = article;
   const [isFavorited, setIsFavorited] = useState(favorited);
