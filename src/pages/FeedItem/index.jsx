@@ -1,22 +1,29 @@
 /* eslint-disable react/prop-types */
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import axios from 'axios';
 import { NavLink, Link } from 'react-router-dom';
 import TimeAgo from 'timeago-react';
 import defaultAvatar from '../../assets/avatar.png';
+import AlertDialogSlide from '../../components/AlertDialogSlide';
 
 export default function FeedItem(props) {
   const { article, currUser } = props;
   // eslint-disable-next-line max-len, object-curly-newline
   const { _id: articleId, title, description, createdAt, favorited, favoritesCount, tagList, author: { username, image } } = article;
   const [isFavorited, setIsFavorited] = useState(favorited);
+  const [open, setOpen] = React.useState(false);
+
   const favCountEl = useRef(null);
+
+  useEffect(() => {
+    setIsFavorited(favorited);
+  }, [favorited]);
 
   async function handleToggleFavorite(e) {
     e.currentTarget.blur();
     // require to be logged in
     if (!currUser) {
-      alert('Please log in');
+      setOpen(true);
       return;
     }
 
@@ -53,38 +60,41 @@ export default function FeedItem(props) {
   }
 
   return (
-    <div className="article-preview">
-      <div className="article-meta">
-        <NavLink to={`/profile/${username}`}><img alt="avatar" src={image || defaultAvatar} /></NavLink>
-        <div className="info">
-          <NavLink to={`/profile/${username}`} className="author">{username}</NavLink>
-          <span className="date">
-            <TimeAgo datetime={createdAt} />
-          </span>
+    <>
+      <AlertDialogSlide open={open} setOpen={setOpen} />
+      <div className="article-preview">
+        <div className="article-meta">
+          <NavLink to={`/profile/${username}`}><img alt="avatar" src={image || defaultAvatar} /></NavLink>
+          <div className="info">
+            <NavLink to={`/profile/${username}`} className="author">{username}</NavLink>
+            <span className="date">
+              <TimeAgo datetime={createdAt} />
+            </span>
+          </div>
+          <button
+            type="button"
+            className={`btn btn-outline-primary btn-sm pull-xs-right ${(isFavorited ? 'active' : '')}`}
+            onClick={handleToggleFavorite}
+          >
+            <i className="ion-heart" />
+            &nbsp;
+            <span ref={favCountEl}>{favoritesCount}</span>
+          </button>
         </div>
-        <button
-          type="button"
-          className={`btn btn-outline-primary btn-sm pull-xs-right ${(isFavorited ? 'active' : '')}`}
-          onClick={handleToggleFavorite}
-        >
-          <i className="ion-heart" />
-          &nbsp;
-          <span ref={favCountEl}>{favoritesCount}</span>
-        </button>
+        <Link to={`/article/${articleId}`} className="preview-link">
+          <h1>{title}</h1>
+          <p>{description}</p>
+          <span>Read more...</span>
+        </Link>
+        <ul className="tag-list pull-xs-right">
+          {tagList.map((tag, index) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <a href="/" key={index} className="tag-default tag-pill tag-outline">
+              {tag}
+            </a>
+          ))}
+        </ul>
       </div>
-      <Link to={`/article/${articleId}`} className="preview-link">
-        <h1>{title}</h1>
-        <p>{description}</p>
-        <span>Read more...</span>
-      </Link>
-      <ul className="tag-list pull-xs-right">
-        {tagList.map((tag, index) => (
-          // eslint-disable-next-line react/no-array-index-key
-          <a href="/" key={index} className="tag-default tag-pill tag-outline">
-            {tag}
-          </a>
-        ))}
-      </ul>
-    </div>
+    </>
   );
 }

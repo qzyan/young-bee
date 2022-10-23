@@ -5681,6 +5681,10 @@ button.close {
   overflow: hidden
 }
 
+.show {
+  opacity: 1;
+}
+
 .modal {
   position: fixed;
   top: 0;
@@ -5695,23 +5699,35 @@ button.close {
 }
 
 .modal.fade .modal-dialog {
-  transition: transform .3s ease-out;
-  transform: translate(0, -25%)
+  transition: transform 0.3s ease-out;
+  transform: translate(0, 0)
 }
 
 .modal.in .modal-dialog {
-  transform: translate(0, 0)
+  transform: translate(0, -25%)
 }
 
 .modal-open .modal {
   overflow-x: hidden;
-  overflow-y: auto
+  overflow-y: auto;
 }
 
 .modal-dialog {
   position: relative;
   width: auto;
-  margin: 10px
+  margin: 10px;
+}
+
+.modal-dialog-centered {
+  position: fixed;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .modal-content {

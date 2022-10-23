@@ -3,6 +3,7 @@
 /* eslint-disable react/destructuring-assignment */
 import { connect } from 'react-redux';
 import React, { useState } from 'react';
+// eslint-disable-next-line no-unused-vars
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { createLoginAction } from '../../redux/actions/currUser';
@@ -11,7 +12,9 @@ import { createLoginAction } from '../../redux/actions/currUser';
 function Login(props) {
   const [user, setUser] = useState({});
   const navigate = useNavigate();
-  const { isLogin } = props;
+  const {
+    isLogin, isModal, setIsLogin, handleClose,
+  } = props;
 
   function collectData(e, dataType) {
     const { value } = e.target;
@@ -29,7 +32,10 @@ function Login(props) {
         // update the currUser in redux
         props.login(user);
         // jump to home
-        navigate(-1);
+        if (!isModal) {
+          navigate(-1);
+        }
+        handleClose();
       })
       .then(() => {
       })
@@ -38,17 +44,24 @@ function Login(props) {
       });
   }
 
+  function handleToggleIsLogin(e) {
+    e.preventDefault();
+    setIsLogin(!isLogin);
+  }
+
   return (
     <div className="auth-page">
       <div className="container page">
         <div className="row">
-          <div className="col-md-6 offset-md-3 col-xs-12">
+          <div className={isModal ? 'col-12' : 'col-md-6 offset-md-3 col-xs-12'}>
             <h1 className="text-xs-center">{isLogin ? 'Sign in' : 'Sign up'}</h1>
             <p className="text-xs-center">
-              {isLogin
+              {/* {isLogin
                 ? <Link to="/register">Need a new account?</Link>
-                : <Link to="/login">Have an account?</Link>}
-
+                : <Link to="/login">Have an account?</Link>} */}
+              {isLogin
+                ? <a href="/" onClick={handleToggleIsLogin}>Need a new account?</a>
+                : <a href="/" onClick={handleToggleIsLogin}>Have an account?</a>}
             </p>
             <form onSubmit={handleSubmit}>
               {isLogin

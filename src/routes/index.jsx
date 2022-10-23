@@ -1,9 +1,9 @@
 /* eslint-disable react/jsx-boolean-value */
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import Login from '../containers/Login';
+import Login from '../pages/Login';
 import HomePage from '../pages/HomePage';
-import Editor from '../containers/Editor';
+import Editor from '../pages/Editor';
 import Profile from '../pages/Profile';
 import Settings from '../pages/Settings';
 import Article from '../pages/Article';

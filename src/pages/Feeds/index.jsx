@@ -47,7 +47,7 @@ function Feeds(props) {
       const url = `${BASE_URL}/articles`;
       fetchArticlesData(url, limit, offset, token, undefined, undefined, username);
     }
-  }, [currPage, pagesCount, feedsType]);
+  }, [currPage, pagesCount, feedsType, currUser]);
 
   useEffect(() => {
     setCurrpage(1);
