@@ -6,13 +6,13 @@ import defaultAvatar from '../../../assets/avatar.png';
 
 export default function ArticleMeta(props) {
   // eslint-disable-next-line max-len, react/prop-types, object-curly-newline
-  const { username, createdAt, favoritesCount, image, isFavorited, isFollowing, setIsFavorited, setFavoritesCount, setIsFollowing, currUser, articleId, article } = props;
+  const { username, createdAt, favoritesCount, image, isFavorited, isFollowing, setIsFavorited, setFavoritesCount, setIsFollowing, currUser, articleId, article, setOpen } = props;
   const navigate = useNavigate();
 
   const handleFollow = () => {
     // auth required
     if (!currUser) {
-      alert('need login');
+      setOpen(true);
       return;
     }
 
@@ -69,7 +69,7 @@ export default function ArticleMeta(props) {
     e.currentTarget.blur();
     // require to be logged in
     if (!currUser) {
-      alert('need login');
+      setOpen(true);
       return;
     }
 
@@ -108,9 +108,9 @@ export default function ArticleMeta(props) {
 
   return (
     <div className="article-meta">
-      <a href="/"><img src={image || defaultAvatar} alt="avatar" /></a>
+      <Link to={`/profile/${username}`}><img src={image || defaultAvatar} alt="avatar" /></Link>
       <div className="info">
-        <a href="/" className="author">{username}</a>
+        <Link to={`/profile/${username}`} className="author">{username}</Link>
         <span className="date">{`Posted on ${new Date(createdAt).toDateString()}`}</span>
       </div>
       {currUser && currUser.username === username

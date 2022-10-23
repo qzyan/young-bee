@@ -9,7 +9,7 @@ function Header(props) {
   return (
     <nav className="navbar navbar-light">
       <div className="container">
-        <a className="navbar-brand" href="index.html">Hive</a>
+        <a className="navbar-brand" href="/home">Hive</a>
         <ul className="nav navbar-nav pull-xs-right">
           <li className="nav-item">
             <NavLink className="nav-link hhh" to="/home">Home</NavLink>

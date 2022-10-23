@@ -1,3 +1,4 @@
+/* eslint-disable object-curly-newline */
 /* eslint-disable no-shadow */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/destructuring-assignment */
@@ -12,9 +13,7 @@ import { createLoginAction } from '../../redux/actions/currUser';
 function Login(props) {
   const [user, setUser] = useState({});
   const navigate = useNavigate();
-  const {
-    isLogin, isModal, setIsLogin, handleClose,
-  } = props;
+  const { isLogin, isModal, setIsLogin, handleClose } = props;
 
   function collectData(e, dataType) {
     const { value } = e.target;
@@ -56,12 +55,12 @@ function Login(props) {
           <div className={isModal ? 'col-12' : 'col-md-6 offset-md-3 col-xs-12'}>
             <h1 className="text-xs-center">{isLogin ? 'Sign in' : 'Sign up'}</h1>
             <p className="text-xs-center">
-              {/* {isLogin
-                ? <Link to="/register">Need a new account?</Link>
-                : <Link to="/login">Have an account?</Link>} */}
-              {isLogin
-                ? <a href="/" onClick={handleToggleIsLogin}>Need a new account?</a>
-                : <a href="/" onClick={handleToggleIsLogin}>Have an account?</a>}
+              {
+                isModal
+                  ? <a href="/" onClick={handleToggleIsLogin}>{isLogin ? 'Need a new account?' : 'Have an account?'}</a>
+                  : <Link to={isLogin ? '/register' : '/login'}>{isLogin ? 'Need a new account?' : 'Have an account?'}</Link>
+              }
+
             </p>
             <form onSubmit={handleSubmit}>
               {isLogin

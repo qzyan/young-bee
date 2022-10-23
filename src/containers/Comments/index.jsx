@@ -5,14 +5,14 @@
 /* eslint-disable react/prop-types */
 import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import CommentItem from './CommentItem';
 import defaultAvatar from '../../assets/avatar.png';
 import './index.css';
 
 function Comments(props) {
-  const { currUser, articleId } = props;
+  const { currUser, articleId, setOpen } = props;
   const [comments, setComments] = useState([]);
   const inputEl = useRef(null);
 
@@ -55,46 +55,53 @@ function Comments(props) {
       });
   }
 
+  function handlePopLogin(e) {
+    e.preventDefault();
+    setOpen(true);
+  }
+
   return (
 
     <div className="row">
       <div className="col-xs-12 col-md-8 offset-md-2">
-        {currUser
-          ? (
-            <form
-              className="card comment-form"
-              onSubmit={handleSubmit}
-            >
-              <div className="card-block">
-                <textarea
-                  ref={inputEl}
-                  className="form-control"
-                  placeholder="Write a comment..."
-                  rows="3"
-                />
-              </div>
-              <div className="card-footer">
-                {currUser
-                  ? <img src={image || defaultAvatar} alt="" className="comment-author-img" />
-                  : null}
-                <button
-                  className="btn btn-sm btn-primary"
-                  type="submit"
-                >
-                  Post Comment
-                </button>
-              </div>
-            </form>
-          )
-          : (
-            <Link to="/login">
+        {
+          currUser
+            ? (
+              <form
+                className="card comment-form"
+                onSubmit={handleSubmit}
+              >
+                <div className="card-block">
+                  <textarea
+                    ref={inputEl}
+                    className="form-control"
+                    placeholder="Write a comment..."
+                    rows="3"
+                  />
+                </div>
+                <div className="card-footer">
+                  {currUser
+                    ? <img src={image || defaultAvatar} alt="" className="comment-author-img" />
+                    : null}
+                  <button
+                    className="btn btn-sm btn-primary"
+                    type="submit"
+                  >
+                    Post Comment
+                  </button>
+                </div>
+              </form>
+            )
+            : (
+              // <Link to="/login">
               <div className="card">
                 <div className="card-block">
-                  <p className="card-text">What are Your thoughts?</p>
+                  <p className="card-text"><a href="/" style={{ color: '#ccc' }} onClick={handlePopLogin}>What are Your thoughts?</a></p>
                 </div>
               </div>
-            </Link>
-          )}
+              // </Link>
+            )
+        }
 
         {comments.map((comment) => <CommentItem key={comment._id} comment={comment} currUser={currUser} />)}
 
