@@ -7,6 +7,7 @@ import ReactMarkdown from 'react-markdown';
 import axios from 'axios';
 import Comments from '../../containers/Comments';
 import ArticleMeta from './ArticleMeta';
+import TagsList from '../TagsList';
 import './index.css';
 
 function Article(props) {
@@ -93,14 +94,7 @@ function Article(props) {
               </p>
             </div>
 
-            <ul className="tag-list">
-              {tagList.map((tag, index) => (
-                // eslint-disable-next-line jsx-a11y/anchor-is-valid, react/no-array-index-key
-                <a href="" key={index} className="tag-default tag-pill tag-outline">
-                  {tag}
-                </a>
-              ))}
-            </ul>
+            <TagsList tagList={tagList} />
           </div>
         </div>
 

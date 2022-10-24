@@ -5,7 +5,7 @@
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import FeedItem from '../FeedItem';
+import FeedItem from './FeedItem';
 import Pages from '../Pages';
 import { getArticles } from '../../utils/http';
 
@@ -33,7 +33,7 @@ function Feeds(props) {
       fetchArticlesData(url, limit, offset, token);
     }
 
-    if (feedsType === 'personal') {
+    if (feedsType === 'following') {
       const url = `${BASE_URL}/articles/feed`;
       fetchArticlesData(url, limit, offset, token);
     }

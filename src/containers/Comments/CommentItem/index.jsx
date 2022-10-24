@@ -55,7 +55,6 @@ export default function CommentItem(props) {
         {currUserId === authorId
           ? (
             <span className="mod-options">
-              <i className="ion-edit" />
               <i className="ion-trash-a" onClick={handleDelete} aria-hidden="true" />
             </span>
           )

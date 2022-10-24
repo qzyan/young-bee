@@ -44,10 +44,6 @@ function AlertDialogSlide(props) {
       >
         <DialogContent>
           <Login isModal isLogin={isLogin} setIsLogin={setIsLogin} handleClose={handleClose} />
-          {/* <DialogContentText id="alert-dialog-slide-description">
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-          </DialogContentText> */}
         </DialogContent>
       </Dialog>
     </div>

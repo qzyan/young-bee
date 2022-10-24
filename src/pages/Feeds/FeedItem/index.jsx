@@ -5,8 +5,9 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import TimeAgo from 'timeago-react';
 import { connect } from 'react-redux';
-import { openSigninDialog } from '../../redux/actions/dialog';
-import defaultAvatar from '../../assets/avatar.png';
+import { openSigninDialog } from '../../../redux/actions/dialog';
+import defaultAvatar from '../../../assets/avatar.png';
+import TagsList from '../../TagsList';
 
 function FeedItem(props) {
   const { article, currUser, setOpen } = props;
@@ -85,14 +86,8 @@ function FeedItem(props) {
         <p>{description}</p>
         <span>Read more...</span>
       </Link>
-      <ul className="tag-list pull-xs-right">
-        {tagList.map((tag, index) => (
-          // eslint-disable-next-line react/no-array-index-key
-          <a href="/" key={index} className="tag-default tag-pill tag-outline">
-            {tag}
-          </a>
-        ))}
-      </ul>
+      <TagsList tagList={tagList} position="right" />
+
     </div>
   );
 }

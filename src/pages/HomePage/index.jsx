@@ -17,7 +17,7 @@ function HomePage(props) {
   const toggleFeed = (e, feedsType) => {
     e.preventDefault();
 
-    if (feedsType === 'personal' && !currUser) {
+    if (feedsType === 'following' && !currUser) {
       setOpen();
       return;
     }
@@ -42,11 +42,11 @@ function HomePage(props) {
               <ul className="nav nav-pills outline-active">
                 <li className="nav-item">
                   <a
-                    className={`nav-link ${feedsType === 'personal' ? 'active' : ''}`}
+                    className={`nav-link ${feedsType === 'following' ? 'active' : ''}`}
                     href="/"
-                    onClick={(e) => toggleFeed(e, 'personal')}
+                    onClick={(e) => toggleFeed(e, 'following')}
                   >
-                    Your Feed
+                    Following
                   </a>
                 </li>
                 <li className="nav-item">
