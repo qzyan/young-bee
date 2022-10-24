@@ -4,9 +4,11 @@ import React, { useRef, useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import TimeAgo from 'timeago-react';
+import { connect } from 'react-redux';
+import { openSigninDialog } from '../../redux/actions/dialog';
 import defaultAvatar from '../../assets/avatar.png';
 
-export default function FeedItem(props) {
+function FeedItem(props) {
   const { article, currUser, setOpen } = props;
   // eslint-disable-next-line max-len, object-curly-newline
   const { _id: articleId, title, description, createdAt, favorited, favoritesCount, tagList, author: { username, image } } = article;
@@ -22,7 +24,7 @@ export default function FeedItem(props) {
     e.currentTarget.blur();
     // require to be logged in
     if (!currUser) {
-      setOpen(true);
+      setOpen();
       return;
     }
 
@@ -94,3 +96,5 @@ export default function FeedItem(props) {
     </div>
   );
 }
+
+export default connect(undefined, { setOpen: openSigninDialog })(FeedItem);

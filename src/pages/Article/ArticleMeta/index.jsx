@@ -2,9 +2,11 @@
 import React from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { openSigninDialog } from '../../../redux/actions/dialog';
 import defaultAvatar from '../../../assets/avatar.png';
 
-export default function ArticleMeta(props) {
+function ArticleMeta(props) {
   // eslint-disable-next-line max-len, react/prop-types, object-curly-newline
   const { username, createdAt, favoritesCount, image, isFavorited, isFollowing, setIsFavorited, setFavoritesCount, setIsFollowing, currUser, articleId, article, setOpen } = props;
   const navigate = useNavigate();
@@ -69,7 +71,7 @@ export default function ArticleMeta(props) {
     e.currentTarget.blur();
     // require to be logged in
     if (!currUser) {
-      setOpen(true);
+      setOpen();
       return;
     }
 
@@ -167,3 +169,5 @@ export default function ArticleMeta(props) {
     </div>
   );
 }
+
+export default connect(undefined, { setOpen: openSigninDialog })(ArticleMeta);

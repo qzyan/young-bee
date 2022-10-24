@@ -7,7 +7,6 @@ import ReactMarkdown from 'react-markdown';
 import axios from 'axios';
 import Comments from '../../containers/Comments';
 import ArticleMeta from './ArticleMeta';
-import LoginDialogSlide from '../../components/LoginDialogSlide';
 import './index.css';
 
 function Article(props) {
@@ -20,7 +19,6 @@ function Article(props) {
   const [favoritesCount, setFavoritesCount] = useState(0);
   const [isFollowing, setIsFollowing] = useState(false);
   // dialog modal is open or not
-  const [open, setOpen] = React.useState(false);
 
   // else send a ajax to get the article info when component mounted
   useEffect(() => {
@@ -55,86 +53,81 @@ function Article(props) {
   }, [article]);
 
   return (
-    <>
-      <LoginDialogSlide open={open} setOpen={setOpen} />
-      <div className="article-page">
+    <div className="article-page">
 
-        <div className="banner">
-          <div className="container">
-            <h1>{title}</h1>
+      <div className="banner">
+        <div className="container">
+          <h1>{title}</h1>
 
-            <ArticleMeta
-              username={author.username}
-              image={author.image}
-              createdAt={createdAt}
-              favoritesCount={favoritesCount}
-              isFavorited={isFavorited}
-              isFollowing={isFollowing}
-              setIsFavorited={setIsFavorited}
-              setFavoritesCount={setFavoritesCount}
-              setIsFollowing={setIsFollowing}
-              currUser={currUser}
-              articleId={articleId}
-              article={article}
-              setOpen={setOpen}
-            />
-          </div>
+          <ArticleMeta
+            username={author.username}
+            image={author.image}
+            createdAt={createdAt}
+            favoritesCount={favoritesCount}
+            isFavorited={isFavorited}
+            isFollowing={isFollowing}
+            setIsFavorited={setIsFavorited}
+            setFavoritesCount={setFavoritesCount}
+            setIsFollowing={setIsFollowing}
+            currUser={currUser}
+            articleId={articleId}
+            article={article}
+          />
         </div>
+      </div>
 
-        <div className="container page">
+      <div className="container page">
 
-          <div className="row article-content">
-            <div className="col-md-12">
+        <div className="row article-content">
+          <div className="col-md-12">
 
-              <div className="article-body">
-                <ReactMarkdown>
-                  {body}
-                </ReactMarkdown>
-                <p className="font-italic text-sm-right">
-                  <small>
-                    {'Last updated at '}
-                    {new Date(updatedAt).toDateString()}
-                  </small>
-                </p>
-              </div>
-
-              <ul className="tag-list">
-                {tagList.map((tag, index) => (
-                  // eslint-disable-next-line jsx-a11y/anchor-is-valid, react/no-array-index-key
-                  <a href="" key={index} className="tag-default tag-pill tag-outline">
-                    {tag}
-                  </a>
-                ))}
-              </ul>
+            <div className="article-body">
+              <ReactMarkdown>
+                {body}
+              </ReactMarkdown>
+              <p className="font-italic text-sm-right">
+                <small>
+                  {'Last updated at '}
+                  {new Date(updatedAt).toDateString()}
+                </small>
+              </p>
             </div>
+
+            <ul className="tag-list">
+              {tagList.map((tag, index) => (
+                // eslint-disable-next-line jsx-a11y/anchor-is-valid, react/no-array-index-key
+                <a href="" key={index} className="tag-default tag-pill tag-outline">
+                  {tag}
+                </a>
+              ))}
+            </ul>
           </div>
-
-          <hr />
-
-          <div className="article-actions">
-            <ArticleMeta
-              username={author.username}
-              image={author.image}
-              createdAt={createdAt}
-              favoritesCount={favoritesCount}
-              isFavorited={isFavorited}
-              isFollowing={isFollowing}
-              setIsFavorited={setIsFavorited}
-              setFavoritesCount={setFavoritesCount}
-              setIsFollowing={setIsFollowing}
-              currUser={currUser}
-              articleId={articleId}
-              article={article}
-              setOpen={setOpen}
-            />
-          </div>
-
-          <Comments articleId={articleId} setOpen={setOpen} />
-
         </div>
+
+        <hr />
+
+        <div className="article-actions">
+          <ArticleMeta
+            username={author.username}
+            image={author.image}
+            createdAt={createdAt}
+            favoritesCount={favoritesCount}
+            isFavorited={isFavorited}
+            isFollowing={isFollowing}
+            setIsFavorited={setIsFavorited}
+            setFavoritesCount={setFavoritesCount}
+            setIsFollowing={setIsFollowing}
+            currUser={currUser}
+            articleId={articleId}
+            article={article}
+          />
+        </div>
+
+        <Comments articleId={articleId} />
 
       </div>
-    </>
+
+    </div>
   );
 }
 

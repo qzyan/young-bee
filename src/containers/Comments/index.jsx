@@ -9,6 +9,7 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import CommentItem from './CommentItem';
 import defaultAvatar from '../../assets/avatar.png';
+import { openSigninDialog } from '../../redux/actions/dialog';
 import './index.css';
 
 function Comments(props) {
@@ -57,7 +58,7 @@ function Comments(props) {
 
   function handlePopLogin(e) {
     e.preventDefault();
-    setOpen(true);
+    setOpen();
   }
 
   return (
@@ -111,4 +112,4 @@ function Comments(props) {
   );
 }
 
-export default connect((state) => ({ currUser: state.currUser }), {})(Comments);
+export default connect((state) => ({ currUser: state.currUser }), { setOpen: openSigninDialog })(Comments);

@@ -5,19 +5,20 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import { openSigninDialog } from '../../redux/actions/dialog';
 import Feeds from '../Feeds';
 import Tags from '../Tags';
 
 function HomePage(props) {
   // eslint-disable-next-line no-unused-vars
   const [feedsType, setFeedsType] = useState('global');
-  const { currUser } = props;
+  const { currUser, setOpen } = props;
 
   const toggleFeed = (e, feedsType) => {
     e.preventDefault();
 
     if (feedsType === 'personal' && !currUser) {
-      alert('Please login');
+      setOpen();
       return;
     }
 
@@ -41,7 +42,7 @@ function HomePage(props) {
               <ul className="nav nav-pills outline-active">
                 <li className="nav-item">
                   <a
-                    className={`nav-link ${currUser ? '' : 'disabled'} ${feedsType === 'personal' ? 'active' : ''}`}
+                    className={`nav-link ${feedsType === 'personal' ? 'active' : ''}`}
                     href="/"
                     onClick={(e) => toggleFeed(e, 'personal')}
                   >
@@ -72,4 +73,4 @@ function HomePage(props) {
   );
 }
 
-export default connect((state) => ({ currUser: state.currUser }), {})(HomePage);
+export default connect((state) => ({ currUser: state.currUser }), { setOpen: openSigninDialog })(HomePage);

@@ -8,13 +8,11 @@ import { connect } from 'react-redux';
 import FeedItem from '../FeedItem';
 import Pages from '../Pages';
 import { getArticles } from '../../utils/http';
-import LoginDialogSlide from '../../components/LoginDialogSlide';
 
 function Feeds(props) {
   const [articles, setArticles] = useState([]);
   const [currPage, setCurrpage] = useState(1);
   const [pagesCount, setPagesCount] = useState(0);
-  const [open, setOpen] = React.useState(false);
 
   const { currUser, feedsType, username } = props;
   // when current page changes, get the feeds list and feeds count from api
@@ -63,8 +61,7 @@ function Feeds(props) {
 
   return (
     <>
-      <LoginDialogSlide open={open} setOpen={setOpen} />
-      {articles.map((article) => <FeedItem key={article._id} article={article} currUser={currUser} setOpen={setOpen} />)}
+      {articles.map((article) => <FeedItem key={article._id} article={article} currUser={currUser} />)}
       <Pages pagesCount={pagesCount} currPage={currPage} changeCurrPage={changeCurrPage} />
     </>
   );

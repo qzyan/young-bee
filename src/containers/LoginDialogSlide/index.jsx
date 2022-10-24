@@ -10,6 +10,8 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 import { TransitionProps } from '@mui/material/transitions';
+import { connect } from 'react-redux';
+import { openSigninDialog, closeSigninDialog } from '../../redux/actions/dialog';
 import Login from '../../pages/Login';
 
 const Transition = React.forwardRef((
@@ -19,16 +21,16 @@ const Transition = React.forwardRef((
   ref: React.Ref<unknown>,
 ) => (<Slide direction="up" ref={ref} {...props} />));
 
-export default function AlertDialogSlide(props) {
+function AlertDialogSlide(props) {
   const [isLogin, setIsLogin] = useState(true);
-  const { open, setOpen } = props;
+  const { open, setOpen, setClose } = props;
 
   const handleClickOpen = () => {
-    setOpen(true);
+    setOpen();
   };
 
   const handleClose = () => {
-    setOpen(false);
+    setClose();
   };
 
   return (
@@ -51,3 +53,8 @@ export default function AlertDialogSlide(props) {
     </div>
   );
 }
+
+export default connect(
+  (state) => ({ open: state.dialog }),
+  { setOpen: openSigninDialog, setClose: closeSigninDialog },
+)(AlertDialogSlide);
