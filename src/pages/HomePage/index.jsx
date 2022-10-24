@@ -6,7 +6,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { openSigninDialog } from '../../redux/actions/dialog';
-import Feeds from '../Feeds';
+import Feeds from '../../containers/Feeds';
 import Tags from '../Tags';
 
 function HomePage(props) {

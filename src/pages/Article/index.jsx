@@ -7,7 +7,7 @@ import ReactMarkdown from 'react-markdown';
 import axios from 'axios';
 import Comments from '../../containers/Comments';
 import ArticleMeta from './ArticleMeta';
-import TagsList from '../TagsList';
+import TagsList from '../../components/TagsList';
 import './index.css';
 
 function Article(props) {

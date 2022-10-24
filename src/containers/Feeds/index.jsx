@@ -6,7 +6,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import FeedItem from './FeedItem';
-import Pages from '../Pages';
+import Pages from './Pages';
 import { getArticles } from '../../utils/http';
 
 function Feeds(props) {

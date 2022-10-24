@@ -7,7 +7,7 @@ import TimeAgo from 'timeago-react';
 import { connect } from 'react-redux';
 import { openSigninDialog } from '../../../redux/actions/dialog';
 import defaultAvatar from '../../../assets/avatar.png';
-import TagsList from '../../TagsList';
+import TagsList from '../../../components/TagsList';
 
 function FeedItem(props) {
   const { article, currUser, setOpen } = props;
@@ -85,8 +85,8 @@ function FeedItem(props) {
         <h1>{title}</h1>
         <p>{description}</p>
         <span>Read more...</span>
+        <TagsList tagList={tagList} position="right" />
       </Link>
-      <TagsList tagList={tagList} position="right" />
 
     </div>
   );
