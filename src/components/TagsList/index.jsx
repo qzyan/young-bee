@@ -7,9 +7,9 @@ export default function TagsList(props) {
     <ul className={`tag-list ${position === 'right' ? 'pull-xs-right' : ''}`}>
       {tagList.map((tag, index) => (
         // eslint-disable-next-line react/no-array-index-key
-        <a href="/" key={index} className="tag-default tag-pill tag-outline">
+        <div key={index} className="tag-default tag-pill tag-outline">
           {tag}
-        </a>
+        </div>
       ))}
     </ul>
   );
