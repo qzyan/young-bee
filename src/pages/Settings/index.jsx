@@ -12,9 +12,6 @@ function Settings(props) {
   const [user, setUser] = useState({});
   const navigate = useNavigate();
 
-  function handleLogout() {
-  }
-
   function handleSubmit(e) {
     e.preventDefault();
     const BASE_URL = process.env.REACT_APP_BASE_URL;
@@ -112,16 +109,6 @@ function Settings(props) {
                 </button>
               </fieldset>
             </form>
-            <hr />
-            <a href="/logout">
-              <button
-                className="btn btn-outline-danger"
-                onClick={handleLogout}
-                type="button"
-              >
-                Or click here to logout.
-              </button>
-            </a>
           </div>
 
         </div>

@@ -1,11 +1,17 @@
 /* eslint-disable react/prop-types */
 import React, { Fragment } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import defaultAvatar from '../../assets/avatar.png';
+import { createLogoutAction } from '../../redux/actions/currUser';
 
 function Header(props) {
-  const { currUser } = props;
+  const { currUser, signOut } = props;
+
+  const handleSignOut = () => {
+    signOut();
+  };
+
   return (
     <nav className="navbar navbar-light">
       <div className="container">
@@ -35,6 +41,12 @@ function Header(props) {
                     {currUser.username}
                   </NavLink>
                 </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/home" onClick={handleSignOut}>
+                    <i className="ion-log-out" />
+                    &nbsp;Sign out
+                  </Link>
+                </li>
               </>
             )
             : (
@@ -53,4 +65,7 @@ function Header(props) {
   );
 }
 
-export default connect((state) => ({ currUser: state.currUser }), {})(Header);
+export default connect(
+  (state) => ({ currUser: state.currUser }),
+  { signOut: createLogoutAction },
+)(Header);
