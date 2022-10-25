@@ -11,7 +11,7 @@ function ArticleMeta(props) {
   const { username, createdAt, favoritesCount, image, isFavorited, isFollowing, setIsFavorited, setFavoritesCount, setIsFollowing, currUser, articleId, article, setOpen } = props;
   const navigate = useNavigate();
 
-  const handleFollow = () => {
+  const handleToggleFollowing = () => {
     // auth required
     if (!currUser) {
       setOpen(true);
@@ -141,7 +141,7 @@ function ArticleMeta(props) {
         )
         : (
           <button
-            onClick={handleFollow}
+            onClick={handleToggleFollowing}
             className={`btn btn-sm btn-outline-secondary ${(isFollowing ? 'active' : '')}`}
             type="button"
           >

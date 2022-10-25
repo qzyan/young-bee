@@ -7,21 +7,19 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { connect } from 'react-redux';
 import defaultAvatar from '../../assets/avatar.png';
 import Feeds from '../../containers/Feeds';
+import { openSigninDialog } from '../../redux/actions/dialog';
 // import Tags from '../Tags';
 
-export default function Profile() {
+function Profile(props) {
+  const { currUser, setOpen } = props;
   const [profile, setProfile] = useState({});
   const { bio, image } = profile;
   const [feedsType, setFeedsType] = useState('profile');
+  const [isFollowing, setIsFollowing] = useState(false);
   const { username } = useParams();
-
-  const toggleFeed = (e, feedsType) => {
-    e.preventDefault();
-
-    setFeedsType(feedsType);
-  };
 
   // get the user's bio and related articles when component is mounted
   useEffect(() => {
@@ -29,8 +27,16 @@ export default function Profile() {
       try {
         const BASE_URL = process.env.REACT_APP_BASE_URL;
         const url = `${BASE_URL}/profiles/${username}`;
-        const { data: { profile } } = await axios.get(url);
+        const { token } = currUser || {};
+        const params = token ? {
+          headers: {
+            Authentication: `Bearer: ${token}`,
+          },
+        }
+          : {};
+        const { data: { profile } } = await axios.get(url, params);
         setProfile(profile);
+        setIsFollowing(profile.following);
       } catch (e) {
         console.log(e);
       }
@@ -38,6 +44,53 @@ export default function Profile() {
 
     fetchProfile();
   }, []);
+
+  const toggleFeed = (e, feedsType) => {
+    e.preventDefault();
+
+    setFeedsType(feedsType);
+  };
+
+  const handleToggleFollowing = () => {
+    // auth required
+    if (!currUser) {
+      setOpen(true);
+      return;
+    }
+
+    // send ajax follow request
+    const BASE_URL = process.env.REACT_APP_BASE_URL;
+    const url = `${BASE_URL}/profiles/${username}/follow`;
+    // currently following the author, send ajax request to unfollow
+    if (isFollowing) {
+      axios.delete(url, {
+        headers: {
+          // eslint-disable-next-line react/prop-types
+          Authentication: `Bearer: ${currUser.token}`,
+        },
+      })
+        .then(() => {
+          setIsFollowing(!isFollowing);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+      return;
+    }
+
+    axios.post(url, {}, {
+      headers: {
+        // eslint-disable-next-line react/prop-types
+        Authentication: `Bearer: ${currUser.token}`,
+      },
+    })
+      .then(() => {
+        setIsFollowing(!isFollowing);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
 
   return (
     <div className="profile-page">
@@ -52,11 +105,20 @@ export default function Profile() {
               <p>
                 {bio}
               </p>
-              <button className="btn btn-sm btn-outline-secondary action-btn" type="button">
-                <i className="ion-plus-round" />
-                &nbsp;
-                {`Follow ${username}`}
-              </button>
+              {currUser && currUser.username === username
+                ? null
+                : (
+                  <button
+                    className={`btn btn-sm btn-outline-secondary action-btn ${(isFollowing ? 'active' : '')}`}
+                    type="button"
+                    onClick={handleToggleFollowing}
+                  >
+                    <i className="ion-plus-round" />
+                    &nbsp;
+                    {isFollowing ? `Unfollow ${username}` : `Follow ${username}`}
+                  </button>
+                )}
+
             </div>
 
           </div>
@@ -87,3 +149,5 @@ export default function Profile() {
     </div>
   );
 }
+
+export default connect((state) => ({ currUser: state.currUser }), { setOpen: openSigninDialog })(Profile);
