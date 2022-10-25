@@ -33,10 +33,9 @@ function Login(props) {
         // jump to home
         if (!isModal) {
           navigate(-1);
+          return;
         }
         handleClose();
-      })
-      .then(() => {
       })
       .catch((err) => {
         console.log(err);
