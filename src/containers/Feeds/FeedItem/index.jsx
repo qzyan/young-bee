@@ -1,5 +1,3 @@
-/* eslint-disable react/prop-types */
-// eslint-disable-next-line no-unused-vars
 import React, { useRef, useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
@@ -10,9 +8,9 @@ import defaultAvatar from '../../../assets/avatar.png';
 import TagsList from '../../../components/TagsList';
 
 function FeedItem(props) {
-  const { article, currUser, setOpen } = props;
-  // eslint-disable-next-line max-len, object-curly-newline
-  const { _id: articleId, title, description, createdAt, favorited, favoritesCount, tagList, author: { username, image } } = article;
+  const { article, currUser, setOpen, setFeedsType } = props;
+  const { _id: articleId, title, description, createdAt, favorited, favoritesCount, tagList,
+    author: { username, image } } = article;
   const [isFavorited, setIsFavorited] = useState(favorited);
 
   const favCountEl = useRef(null);
@@ -85,9 +83,8 @@ function FeedItem(props) {
         <h1>{title}</h1>
         <p>{description}</p>
         <span>Read more...</span>
-        <TagsList tagList={tagList} position="right" />
       </Link>
-
+      <TagsList tagList={tagList} position="right" setFeedsType={setFeedsType} isOutline />
     </div>
   );
 }

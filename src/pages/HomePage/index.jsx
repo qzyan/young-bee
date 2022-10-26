@@ -5,21 +5,27 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
 import { openSigninDialog } from '../../redux/actions/dialog';
 import Feeds from '../../containers/Feeds';
-import Tags from '../Tags';
+import PopularTags from '../PopularTags';
 
 function HomePage(props) {
   // eslint-disable-next-line no-unused-vars
   const [feedsType, setFeedsType] = useState('global');
   const { currUser, setOpen } = props;
+  const [searchParams, setSearchParams] = useSearchParams();
+  const tag = searchParams.get('tag');
 
-  const toggleFeed = (e, feedsType) => {
+  const handleChangeFeedsType = (e, feedsType) => {
     e.preventDefault();
 
     if (feedsType === 'following' && !currUser) {
       setOpen();
       return;
+    }
+    if (feedsType !== 'tag') {
+      setSearchParams('');
     }
 
     setFeedsType(feedsType);
@@ -44,7 +50,7 @@ function HomePage(props) {
                   <a
                     className={`nav-link ${feedsType === 'following' ? 'active' : ''}`}
                     href="/"
-                    onClick={(e) => toggleFeed(e, 'following')}
+                    onClick={(e) => handleChangeFeedsType(e, 'following')}
                   >
                     Following
                   </a>
@@ -53,18 +59,27 @@ function HomePage(props) {
                   <a
                     className={`nav-link ${feedsType === 'global' ? 'active' : ''}`}
                     href="/"
-                    onClick={(e) => toggleFeed(e, 'global')}
+                    onClick={(e) => handleChangeFeedsType(e, 'global')}
                   >
                     Global Feed
+                  </a>
+                </li>
+                <li className="nav-item" style={{ display: tag ? 'block' : 'none' }}>
+                  <a
+                    className={`nav-link ${feedsType === 'tag' ? 'active' : ''}`}
+                    href="/"
+                    onClick={(e) => handleChangeFeedsType(e, 'tag')}
+                  >
+                    {`#${tag}`}
                   </a>
                 </li>
               </ul>
             </div>
 
-            <Feeds feedsType={feedsType} username={currUser ? currUser.username : undefined} />
+            <Feeds feedsType={feedsType} tag={tag} setFeedsType={setFeedsType} />
           </div>
 
-          <Tags />
+          <PopularTags setFeedsType={setFeedsType} />
 
         </div>
       </div>

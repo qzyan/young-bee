@@ -94,7 +94,7 @@ function Article(props) {
               </p>
             </div>
 
-            <TagsList tagList={tagList} />
+            <TagsList tagList={tagList} isOutline />
           </div>
         </div>
 

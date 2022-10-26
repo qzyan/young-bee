@@ -38,7 +38,11 @@
       "react-app/jest",
       "airbnb",
       "airbnb/hooks"
-    ]
+    ],
+    "rules": {
+      "react/prop-types": "off",
+      "object-curly-newline": "off"
+    }
   },
   "browserslist": {
     "production": [
