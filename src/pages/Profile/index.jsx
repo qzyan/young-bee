@@ -45,7 +45,7 @@ function Profile(props) {
     fetchProfile();
   }, []);
 
-  const toggleFeed = (e, feedsType) => {
+  const handleChangeFeedsType = (e, feedsType) => {
     e.preventDefault();
 
     setFeedsType(feedsType);
@@ -132,10 +132,10 @@ function Profile(props) {
             <div className="articles-toggle">
               <ul className="nav nav-pills outline-active">
                 <li className="nav-item">
-                  <a className={`nav-link ${feedsType === 'profile' ? 'active' : ''}`} href="/" onClick={(e) => toggleFeed(e, 'profile')}>My Articles</a>
+                  <a className={`nav-link ${feedsType === 'profile' ? 'active' : ''}`} href="/" onClick={(e) => handleChangeFeedsType(e, 'profile')}>My Articles</a>
                 </li>
                 <li className="nav-item">
-                  <a className={`nav-link ${feedsType === 'favorites' ? 'active' : ''}`} href="/" onClick={(e) => toggleFeed(e, 'favorites')}>Favorited Articles</a>
+                  <a className={`nav-link ${feedsType === 'favorites' ? 'active' : ''}`} href="/" onClick={(e) => handleChangeFeedsType(e, 'favorites')}>Favorited Articles</a>
                 </li>
               </ul>
             </div>

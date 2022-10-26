@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 import { openSigninDialog } from '../../redux/actions/dialog';
 import Feeds from '../../containers/Feeds';
-import PopularTags from '../PopularTags';
+import PopularTags from './PopularTags';
 
 function HomePage(props) {
   // eslint-disable-next-line no-unused-vars
@@ -48,20 +48,20 @@ function HomePage(props) {
               <ul className="nav nav-pills outline-active">
                 <li className="nav-item">
                   <a
-                    className={`nav-link ${feedsType === 'following' ? 'active' : ''}`}
-                    href="/"
-                    onClick={(e) => handleChangeFeedsType(e, 'following')}
-                  >
-                    Following
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a
                     className={`nav-link ${feedsType === 'global' ? 'active' : ''}`}
                     href="/"
                     onClick={(e) => handleChangeFeedsType(e, 'global')}
                   >
                     Global Feed
+                  </a>
+                </li>
+                <li className="nav-item">
+                  <a
+                    className={`nav-link ${feedsType === 'following' ? 'active' : ''}`}
+                    href="/"
+                    onClick={(e) => handleChangeFeedsType(e, 'following')}
+                  >
+                    Following
                   </a>
                 </li>
                 <li className="nav-item" style={{ display: tag ? 'block' : 'none' }}>

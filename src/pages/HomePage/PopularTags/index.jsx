@@ -1,7 +1,7 @@
 /* eslint-disable no-shadow */
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import TagsList from '../../components/TagsList';
+import TagsList from '../../../components/TagsList';
 
 export default function PopularTags(props) {
   const { setFeedsType } = props;
