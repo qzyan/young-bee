@@ -2,6 +2,18 @@
 It is the front end implemented with React of a a social blogging platform where users can share knowledge with features like following, liking, and commenting.   
 The back end is separately implemented in this repo: [link to the back end](https://github.com/qzyan/hive)
 
+# Demo
+### Live Demo on AWS EC2  
+
+#### Coming soon
+
+### Gif Demo 
+##### Browse articles of different types - Read artcile you are interested in - Favorite article - Leave comments  
+
+##### Sign up/Sign in - Create your own article - Update existing article - Delete your own article  
+
+##### Check users' profile and related articles - Follow users - Browse articles created by followed users
+
 # Tech Stack  
 ![react](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![React Router](https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white)
