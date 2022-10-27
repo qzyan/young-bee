@@ -3,9 +3,9 @@ It is the front end implemented with React of a a social blogging platform where
 The back end is separately implemented in this repo: [link to the back end](https://github.com/qzyan/hive)
 
 # Demo
-### Live Demo on AWS EC2  
+### Live Demo
 
-#### Coming soon
+#### Deployed on AWS EC2 [http://18.236.226.107/home](http://18.236.226.107/home) 
 
 ### Gif Demo 
 ##### Browse articles of different types - Read artcile you are interested in - Favorite article - Leave comments  
